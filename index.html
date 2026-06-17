@@ -1,1160 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0f0d">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>El Niño Command</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script>
-tailwind.config = {
-    theme: {
-        extend: {
-            fontFamily: { mono: ['JetBrains Mono','monospace'], sans: ['Inter','sans-serif'] },
-            colors: {
-                tactical: {
-                    900:'#0a0f0d',850:'#0d1412',800:'#111a16',750:'#15211c',700:'#1a2e24',650:'#223a30',
-                    600:'#2d4a3e',550:'#355a4a',500:'#3d6b54',450:'#4a7f64',400:'#5a9e7a',350:'#6bb88f',
-                    300:'#7bc9a0', accent:'#ff6b35', warning:'#f59e0b', danger:'#ef4444', info:'#3b82f6',
-                    budget:'#22c55e', citizen:'#3b82f6', operator:'#f59e0b', elite:'#ef4444'
-                }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIELD | Super El Niño Preparedness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        .header-font { font-family: 'Press Start 2P', system-ui; }
+        .hero-bg {
+            background: linear-gradient(rgba(10,20,40,0.85), rgba(10,20,40,0.95)), url('https://picsum.photos/id/1015/2000/1200') center/cover;
+        }
+        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgb(245 158 11 / 0.4); }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200 tail-container">
+
+    <!-- NAVBAR -->
+    <nav class="bg-black border-b border-amber-500/30 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-amber-500 text-black font-bold text-3xl flex items-center justify-center rotate-12">⚡</div>
+                <span class="header-font text-3xl tracking-tighter">SHIELD</span>
+            </div>
+            <div class="flex items-center gap-6 text-sm uppercase tracking-widest">
+                <a href="#tiers" class="hover:text-amber-400">TIERS</a>
+                <a href="#checklist" class="hover:text-amber-400">CHECKLIST</a>
+                <a href="#inventory" onclick="openInventory()" class="hover:text-amber-400">INVENTORY</a>
+                <a href="#" onclick="openProfile()" class="hover:text-amber-400">PROFILE</a>
+            </div>
+            <button onclick="downloadWebsite()" 
+                    class="px-5 py-2 bg-zinc-900 border border-amber-400 hover:bg-amber-400 hover:text-black text-xs tracking-widest transition-all">
+                <i class="fa-solid fa-download"></i> OFFLINE
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-bg h-screen flex items-center relative">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h1 class="header-font text-6xl md:text-7xl font-bold tracking-tighter">THE STORM IS COMING</h1>
+            <p class="mt-6 text-xl text-amber-100">Prepare by your tier • Track your gear offline</p>
+            <button onclick="smoothScrollTo('tiers')" class="mt-10 px-10 py-5 bg-amber-500 text-black font-bold text-lg tracking-widest">START PREPPING</button>
+        </div>
+    </header>
+
+    <!-- INCOME TIERS (same as previous) -->
+    <section id="tiers" class="py-20 bg-black">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="header-font text-5xl text-center mb-12">PREPAREDNESS BY INCOME TIER</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze, Silver, Gold cards (same as last version) -->
+                <div class="bg-zinc-900 p-8 border border-amber-600/50 rounded-xl card-hover">
+                    <div class="text-6xl text-center mb-4">🥉</div>
+                    <h3 class="text-2xl font-bold text-center text-amber-300">BRONZE</h3>
+                    <p class="text-center text-sm text-zinc-400">Under $50k</p>
+                    <ul class="mt-8 space-y-3 text-sm">
+                        <li>30-day basics • Cash • Radio</li>
+                    </ul>
+                </div>
+                <div class="bg-zinc-900 p-8 border border-zinc-400/50 rounded-xl card-hover relative">
+                    <div class="absolute -top-3 right-6 bg-amber-500 text-black text-xs px-4 py-1">RECOMMENDED</div>
+                    <div class="text-6xl text-center mb-4">🥈</div>
+                    <h3 class="text-2xl font-bold text-center">SILVER</h3>
+                    <p class="text-center text-sm text-zinc-400">$50k – $150k</p>
+                </div>
+                <div class="bg-zinc-900 p-8 border border-yellow-500/50 rounded-xl card-hover">
+                    <div class="text-6xl text-center mb-4">🥇</div>
+                    <h3 class="text-2xl font-bold text-center text-yellow-300">GOLD</h3>
+                    <p class="text-center text-sm text-zinc-400">Over $150k</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INVENTORY SYSTEM -->
+    <section id="inventory" class="py-20 bg-zinc-900 hidden">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="header-font text-4xl">PERSONAL INVENTORY</h2>
+                <button onclick="addInventorySlot()" class="px-6 py-3 bg-amber-500 text-black font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> ADD SLOT
+                </button>
+            </div>
+            <div id="inventoryList" class="grid md:grid-cols-2 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- PROFILE MODAL -->
+    <div id="profileModal" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-50">
+        <div class="bg-zinc-900 border border-amber-500 w-full max-w-md mx-4 rounded-xl overflow-hidden">
+            <div class="p-6 border-b border-zinc-700 flex justify-between">
+                <h3 class="text-2xl font-bold">OPERATOR PROFILE</h3>
+                <button onclick="closeProfile()" class="text-3xl leading-none">×</button>
+            </div>
+            <div class="p-8 text-center">
+                <div onclick="document.getElementById('photoUpload').click()" class="cursor-pointer mx-auto w-40 h-40 rounded-2xl overflow-hidden border-4 border-amber-400 mb-6">
+                    <img id="profilePic" src="https://picsum.photos/id/64/300/300" class="w-full h-full object-cover">
+                </div>
+                <input type="file" id="photoUpload" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoUpload(event)">
+                <p class="text-xs text-zinc-400">Tap image to change (Camera / Gallery)</p>
+
+                <div class="mt-10 space-y-6">
+                    <div>
+                        <label class="block text-xs mb-2 text-amber-400">CALLSIGN</label>
+                        <input id="callsign" type="text" value="SHADOW-7" 
+                               class="w-full bg-zinc-800 border border-zinc-700 p-4 text-center">
+                    </div>
+                    <div>
+                        <label class="block text-xs mb-2 text-amber-400">TIER</label>
+                        <select id="userTier" class="w-full bg-zinc-800 border border-zinc-700 p-4">
+                            <option>Bronze</option>
+                            <option selected>Silver</option>
+                            <option>Gold</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-zinc-700 flex gap-4">
+                <button onclick="saveProfile()" class="flex-1 py-5 bg-amber-500 text-black font-bold">SAVE PROFILE</button>
+                <button onclick="closeProfile()" class="flex-1 py-5 border border-zinc-600">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== OFFLINE DOWNLOAD ====================
+        function downloadWebsite() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SHIELD-ElNino-Preparedness.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert("✅ Website saved! Open the downloaded file anytime — even without internet.");
+        }
+
+        // ==================== PROFILE ====================
+        function openProfile() {
+            document.getElementById('profileModal').classList.remove('hidden');
+            loadProfile();
+        }
+
+        function closeProfile() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+
+        function handlePhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('profilePic').src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveProfile() {
+            const callsign = document.getElementById('callsign').value;
+            const tier = document.getElementById('userTier').value;
+            const photo = document.getElementById('profilePic').src;
+            
+            localStorage.setItem('shield_callsign', callsign);
+            localStorage.setItem('shield_tier', tier);
+            localStorage.setItem('shield_photo', photo);
+            
+            alert("Profile saved to your device.");
+            closeProfile();
+        }
+
+        function loadProfile() {
+            const callsign = localStorage.getItem('shield_callsign') || "SHADOW-7";
+            const tier = localStorage.getItem('shield_tier') || "Silver";
+            const photo = localStorage.getItem('shield_photo');
+            
+            document.getElementById('callsign').value = callsign;
+            document.getElementById('userTier').value = tier;
+            if (photo) document.getElementById('profilePic').src = photo;
+        }
+
+        // ==================== INVENTORY SYSTEM ====================
+        let inventory = [];
+
+        function loadInventory() {
+            const saved = localStorage.getItem('shield_inventory');
+            if (saved) inventory = JSON.parse(saved);
+            else {
+                inventory = [
+                    {id:1, name:"Water (gallons)", qty:120, category:"Water"},
+                    {id:2, name:"Rice (lbs)", qty:50, category:"Food"},
+                    {id:3, name:"First Aid Kit", qty:2, category:"Medical"}
+                ];
+            }
+            renderInventory();
+        }
+
+        function saveInventory() {
+            localStorage.setItem('shield_inventory', JSON.stringify(inventory));
+        }
+
+        function renderInventory() {
+            const container = document.getElementById('inventoryList');
+            container.innerHTML = '';
+            
+            inventory.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "bg-zinc-950 border border-zinc-700 p-6 rounded-xl";
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-bold">${item.name}</div>
+                            <div class="text-xs text-zinc-500">${item.category}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-mono text-amber-400">${item.qty}</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="changeQty(${item.id}, -1)" class="flex-1 py-3 bg-zinc-800 hover:bg-red-900 text-sm">-</button>
+                        <button onclick="changeQty(${item.id}, 1)" class="flex-1 py-3 bg-zinc-800 hover:bg-emerald-900 text-sm">+</button>
+                        <button onclick="deleteItem(${item.id})" class="px-4 text-red-400"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function changeQty(id, delta) {
+            const item = inventory.find(i => i.id === id);
+            if (item) {
+                item.qty = Math.max(0, item.qty + delta);
+                renderInventory();
+                saveInventory();
             }
         }
-    }
-}
-</script>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#0a0f0d;color:#e2e8f0;font-family:'Inter',sans-serif;overflow-x:hidden;touch-action:manipulation}
 
-/* ANDROID HOME SCREEN */
-.android-home{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;background:linear-gradient(180deg,#0d1412 0%,#111a16 40%,#0a0f0d 100%);padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-.android-home.hidden{display:none}
-.android-status-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;font-size:12px;font-family:'JetBrains Mono',monospace;color:#5a9e7a}
-.android-clock{font-size:42px;font-weight:300;color:#fff;font-family:'Inter',sans-serif;letter-spacing:-1px}
-.android-date{font-size:14px;color:#7bc9a0;margin-top:4px}
-.android-weather{display:flex;align-items:center;gap:8px;margin-top:16px;padding:12px 16px;background:rgba(45,74,62,0.3);border-radius:16px;border:1px solid rgba(45,74,62,0.5)}
-.android-widgets{padding:20px 16px}
-.android-widget-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-.android-widget{background:rgba(26,46,36,0.6);border:1px solid rgba(45,74,62,0.4);border-radius:20px;padding:16px;backdrop-filter:blur(10px)}
-.android-widget.alert{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.08)}
-.android-widget-title{font-size:11px;font-family:'JetBrains Mono',monospace;color:#5a9e7a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.android-widget-value{font-size:28px;font-weight:800;color:#fff;font-family:'JetBrains Mono',monospace}
-.android-widget-sub{font-size:12px;color:#7bc9a0;margin-top:4px}
-
-/* APP GRID */
-.android-apps{flex:1;overflow-y:auto;padding:0 16px 20px}
-.android-apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 8px;padding-top:8px}
-.android-app{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform 0.15s}
-.android-app:active{transform:scale(0.92)}
-.android-app-icon{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.3)}
-.android-app-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%)}
-.android-app-icon .badge{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px;font-family:'JetBrains Mono',monospace;border:2px solid #0a0f0d}
-.android-app-label{font-size:11px;color:#e2e8f0;text-align:center;font-weight:500;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-/* APP ICON COLORS */
-.app-dashboard{background:linear-gradient(135deg,#3d6b54,#2d4a3e)}
-.app-threats{background:linear-gradient(135deg,#ef4444,#b91c1c)}
-.app-classes{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
-.app-checklist{background:linear-gradient(135deg,#22c55e,#15803d)}
-.app-profile{background:linear-gradient(135deg,#a855f7,#7c3aed)}
-.app-inventory{background:linear-gradient(135deg,#f59e0b,#b45309)}
-.app-calculator{background:linear-gradient(135deg,#06b6d4,#0891b2)}
-.app-supplies{background:linear-gradient(135deg,#ec4899,#be185d)}
-.app-intel{background:linear-gradient(135deg,#6366f1,#4338ca)}
-.app-alerts{background:linear-gradient(135deg,#dc2626,#991b1b)}
-.app-offline{background:linear-gradient(135deg,#6b7280,#374151)}
-.app-settings{background:linear-gradient(135deg,#4b5563,#1f2937)}
-
-/* DOCK */
-.android-dock{display:flex;justify-content:space-around;align-items:center;padding:12px 24px;background:rgba(17,26,22,0.9);backdrop-filter:blur(20px);border-top:1px solid rgba(45,74,62,0.2);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
-.android-dock .android-app-icon{width:52px;height:52px;border-radius:16px}
-
-/* APP SCREENS (FULL SCREEN OVERLAYS) */
-.app-screen{position:fixed;inset:0;z-index:2000;background:#0a0f0d;display:none;flex-direction:column;animation:slideUp 0.3s ease}
-.app-screen.active{display:flex}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-@keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
-.app-screen.closing{animation:slideDown 0.25s ease forwards}
-
-.app-header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(17,26,22,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(45,74,62,0.3);position:sticky;top:0;z-index:10}
-.app-back-btn{width:36px;height:36px;border-radius:50%;background:rgba(45,74,62,0.3);border:none;color:#5a9e7a;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
-.app-title{font-size:16px;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;flex:1}
-.app-content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch}
-
-/* ANDROID UI COMPONENTS */
-.android-card{background:rgba(26,46,36,0.5);border:1px solid rgba(45,74,62,0.3);border-radius:16px;padding:16px;margin-bottom:12px}
-.android-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.android-card-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.android-card-title{font-size:15px;font-weight:700;color:#fff}
-.android-card-sub{font-size:12px;color:#5a9e7a}
-.android-progress{height:6px;background:rgba(45,74,62,0.3);border-radius:3px;overflow:hidden;margin-top:8px}
-.android-progress-fill{height:100%;border-radius:3px;transition:width 0.5s ease}
-.android-list-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(45,74,62,0.2)}
-.android-list-item:last-child{border-bottom:none;padding-bottom:0}
-.android-list-item:first-child{padding-top:0}
-.android-list-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.android-list-content{flex:1;min-width:0}
-.android-list-title{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.android-list-desc{font-size:12px;color:#5a9e7a;margin-top:2px}
-.android-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px}
-.android-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:14px;border:none;font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all 0.2s;margin-top:12px}
-.android-btn:active{transform:scale(0.97)}
-.android-btn-primary{background:#3d6b54;color:#fff}
-.android-btn-danger{background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
-.android-input{width:100%;background:rgba(10,15,13,0.8);border:1px solid rgba(45,74,62,0.4);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none}
-.android-input:focus{border-color:#5a9e7a}
-.android-select{width:100%;background:rgba(10,15,13,0.8);border:1px solid rgba(45,74,62,0.4);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none;appearance:none}
-.android-textarea{width:100%;background:rgba(10,15,13,0.8);border:1px solid rgba(45,74,62,0.4);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none;resize:none;min-height:80px}
-
-/* CHECKBOX */
-.android-check{display:flex;align-items:flex-start;gap:12px;padding:14px;background:rgba(26,46,36,0.3);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
-.android-check:active{background:rgba(26,46,36,0.5)}
-.android-check.checked{background:rgba(45,74,62,0.2);border-color:rgba(90,158,122,0.3)}
-.android-check input[type="checkbox"]{width:22px;height:22px;border-radius:6px;border:2px solid rgba(45,74,62,0.6);background:transparent;appearance:none;cursor:pointer;flex-shrink:0;margin-top:1px;position:relative}
-.android-check input[type="checkbox"]:checked{background:#3d6b54;border-color:#3d6b54}
-.android-check input[type="checkbox"]:checked::after{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;color:#fff;font-size:12px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
-.android-check-text{font-size:13px;color:#e2e8f0;line-height:1.4}
-.android-check-text.checked{color:#7bc9a0;text-decoration:line-through;opacity:0.6}
-
-/* INVENTORY GRID */
-.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.inv-slot{background:rgba(26,46,36,0.4);border:2px dashed rgba(45,74,62,0.4);border-radius:14px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:100px;position:relative;cursor:pointer;transition:all 0.2s}
-.inv-slot:active{transform:scale(0.95)}
-.inv-slot.filled{border-style:solid;border-color:rgba(45,74,62,0.6);background:rgba(26,46,36,0.6)}
-.inv-slot-img{width:100%;height:60px;object-fit:cover;border-radius:8px}
-.inv-slot-icon{font-size:28px;color:#2d4a3e}
-.inv-slot-name{font-size:10px;color:#e2e8f0;text-align:center;font-weight:600;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.inv-slot-qty{font-size:9px;color:#5a9e7a;font-family:'JetBrains Mono',monospace}
-.inv-slot-del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,0.8);color:#fff;border:none;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 0.2s}
-.inv-slot:hover .inv-slot-del,.inv-slot:active .inv-slot-del{opacity:1}
-.inv-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#5a9e7a}
-.inv-add i{font-size:24px}
-.inv-add span{font-size:10px;font-weight:600}
-
-/* MODAL */
-.android-modal{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.85);display:none;align-items:flex-end;justify-content:center;padding:0}
-.android-modal.active{display:flex}
-.android-modal-sheet{background:#111a16;border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s ease;border-top:1px solid rgba(45,74,62,0.3)}
-.android-modal-handle{width:36px;height:4px;background:rgba(45,74,62,0.5);border-radius:2px;margin:0 auto 16px}
-.android-modal-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;font-family:'JetBrains Mono',monospace}
-
-/* TOAST */
-.android-toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(100px);background:rgba(17,26,22,0.95);border:1px solid rgba(45,74,62,0.5);border-radius:14px;padding:12px 20px;color:#7bc9a0;font-size:13px;font-family:'JetBrains Mono',monospace;z-index:5000;opacity:0;transition:all 0.3s ease;white-space:nowrap;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.android-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-.android-toast.error{color:#ef4444;border-color:rgba(239,68,68,0.3)}
-
-/* SCANLINE */
-.scanline{position:fixed;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,255,128,0.015) 50%);background-size:100% 3px;pointer-events:none;z-index:9999}
-
-/* DESKTOP HIDE */
-@media(min-width:769px){.android-home,.app-screen{display:none!important}.desktop-only{display:block}}
-@media(max-width:768px){.desktop-only{display:none}}
-
-/* DESKTOP STYLES */
-.desktop-nav{background:#0a0f0d;border-bottom:1px solid rgba(45,74,62,0.3);padding:12px 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between}
-.desktop-nav a{color:#5a9e7a;text-decoration:none;font-size:13px;font-family:'JetBrains Mono',monospace;padding:6px 12px;border-radius:6px;transition:all 0.2s}
-.desktop-nav a:hover{background:rgba(45,74,62,0.2);color:#7bc9a0}
-.desktop-section{max-width:1200px;margin:0 auto;padding:40px 24px}
-</style>
-</head>
-<body>
-<div class="scanline"></div>
-
-<!-- ==================== ANDROID HOME SCREEN ==================== -->
-<div class="android-home" id="androidHome">
-<!-- Status Bar -->
-<div class="android-status-bar">
-<div style="display:flex;gap:8px;align-items:center">
-<i class="fas fa-signal"></i>
-<i class="fas fa-wifi"></i>
-<i class="fas fa-battery-three-quarters"></i>
-</div>
-<div id="androidStatusTime">12:00</div>
-</div>
-
-<!-- Clock & Weather Widget -->
-<div class="android-widgets">
-<div class="android-clock" id="androidClock">12:00</div>
-<div class="android-date" id="androidDate">Monday, June 17</div>
-<div class="android-weather">
-<i class="fas fa-temperature-high text-tactical-warning" style="font-size:20px"></i>
-<div>
-<div style="font-size:16px;font-weight:700;color:#fff">+6.2°C ANOMALY</div>
-<div style="font-size:12px;color:#5a9e7a">Pacific Ocean | El Niño Watch</div>
-</div>
-</div>
-</div>
-
-<!-- Alert Widgets -->
-<div class="android-widget-grid" style="padding:0 16px">
-<div class="android-widget alert">
-<div class="android-widget-title">Threat Level</div>
-<div class="android-widget-value" style="color:#ef4444;font-size:24px">CRITICAL</div>
-<div class="android-widget-sub">WMO: 80-90% probability</div>
-</div>
-<div class="android-widget">
-<div class="android-widget-title">Readiness</div>
-<div class="android-widget-value" id="widgetReadiness" style="color:#5a9e7a;font-size:24px">0%</div>
-<div class="android-widget-sub">Checklist completion</div>
-</div>
-</div>
-
-<!-- App Grid -->
-<div class="android-apps">
-<div class="android-apps-grid" id="appGrid">
-<!-- Apps injected by JS -->
-</div>
-</div>
-
-<!-- Dock -->
-<div class="android-dock">
-<div class="android-app" onclick="openApp('phone')">
-<div class="android-app-icon app-dashboard"><i class="fas fa-phone" style="color:#fff"></i></div>
-</div>
-<div class="android-app" onclick="openApp('messages')">
-<div class="android-app-icon app-classes"><i class="fas fa-comment" style="color:#fff"></i><span class="badge">3</span></div>
-</div>
-<div class="android-app" onclick="openApp('browser')">
-<div class="android-app-icon app-info"><i class="fas fa-globe" style="color:#fff"></i></div>
-</div>
-<div class="android-app" onclick="openApp('camera')">
-<div class="android-app-icon app-supplies"><i class="fas fa-camera" style="color:#fff"></i></div>
-</div>
-</div>
-</div>
-
-<!-- ==================== APP SCREENS ==================== -->
-
-<!-- DASHBOARD APP -->
-<div class="app-screen" id="app-dashboard">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-gauge-high mr-2" style="color:#3d6b54"></i>DASHBOARD</div>
-</div>
-<div class="app-content">
-<div class="android-card" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05)">
-<div class="android-card-header">
-<div class="android-card-icon" style="background:rgba(239,68,68,0.15);color:#ef4444"><i class="fas fa-radiation"></i></div>
-<div>
-<div class="android-card-title">THREAT LEVEL: CRITICAL</div>
-<div class="android-card-sub">Super El Niño 2026</div>
-</div>
-</div>
-<div class="android-progress"><div class="android-progress-fill" style="width:90%;background:#ef4444"></div></div>
-</div>
-<div class="android-card">
-<div class="android-card-header">
-<div class="android-card-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b"><i class="fas fa-clock"></i></div>
-<div>
-<div class="android-card-title">EST. ONSET: JUNE-AUG</div>
-<div class="android-card-sub">Peak: November 2026</div>
-</div>
-</div>
-<div class="android-progress"><div class="android-progress-fill" style="width:65%;background:#f59e0b"></div></div>
-</div>
-<div class="android-card">
-<div class="android-card-header">
-<div class="android-card-icon" style="background:rgba(255,107,53,0.15);color:#ff6b35"><i class="fas fa-temperature-high"></i></div>
-<div>
-<div class="android-card-title">PACIFIC ANOMALY: +6.2°C</div>
-<div class="android-card-sub">Subsurface reservoir heat</div>
-</div>
-</div>
-<div class="android-progress"><div class="android-progress-fill" style="width:85%;background:#ff6b35"></div></div>
-</div>
-<div class="android-card">
-<div class="android-card-header">
-<div class="android-card-icon" style="background:rgba(90,158,122,0.15);color:#5a9e7a"><i class="fas fa-shield-halved"></i></div>
-<div>
-<div class="android-card-title">YOUR READINESS</div>
-<div class="android-card-sub" id="appReadinessSub">Complete checklist</div>
-</div>
-</div>
-<div class="android-progress"><div class="android-progress-fill" id="appReadinessBar" style="width:0%;background:#5a9e7a"></div></div>
-</div>
-</div>
-</div>
-
-<!-- THREATS APP -->
-<div class="app-screen" id="app-threats">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-triangle-exclamation mr-2" style="color:#ef4444"></i>THREATS</div>
-</div>
-<div class="app-content" id="threatsContent">
-<!-- Injected by JS -->
-</div>
-</div>
-
-<!-- CLASSES APP -->
-<div class="app-screen" id="app-classes">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-layer-group mr-2" style="color:#3b82f6"></i>CLASSES</div>
-</div>
-<div class="app-content" id="classesContent">
-<!-- Injected by JS -->
-</div>
-</div>
-
-<!-- CHECKLIST APP -->
-<div class="app-screen" id="app-checklist">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-list-check mr-2" style="color:#22c55e"></i>CHECKLIST</div>
-<div class="android-badge" style="background:rgba(90,158,122,0.15);color:#5a9e7a" id="checklistBadge">0%</div>
-</div>
-<div class="app-content" id="checklistContent">
-<!-- Injected by JS -->
-</div>
-</div>
-
-<!-- PROFILE APP -->
-<div class="app-screen" id="app-profile">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-user mr-2" style="color:#a855f7"></i>PROFILE</div>
-</div>
-<div class="app-content">
-<div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px">
-<div class="profile-avatar" id="profileAvatar" onclick="openAvatarModal()" style="width:100px;height:100px;border-radius:50%;border:3px solid #3d6b54;background:#1a2e24;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden">
-<img id="avatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover">
-<i class="fas fa-user" id="avatarIcon" style="font-size:40px;color:#5a9e7a"></i>
-</div>
-<button onclick="openAvatarModal()" class="android-badge" style="background:rgba(61,107,84,0.2);color:#7bc9a0"><i class="fas fa-camera mr-1"></i>CHANGE PHOTO</button>
-</div>
-<div class="space-y-3">
-<div><label class="text-xs font-mono text-tactical-400">CALLSIGN / NAME</label><input type="text" id="profileName" class="android-input mt-1" placeholder="Enter callsign..." onchange="saveProfile()"></div>
-<div><label class="text-xs font-mono text-tactical-400">INCOME CLASS</label><select id="profileClass" class="android-select mt-1" onchange="saveProfile()"><option value="">Select...</option><option value="budget">Budget Survivor</option><option value="citizen">Tactical Citizen</option><option value="operator">Operator Class</option><option value="elite">Command Elite</option></select></div>
-<div class="grid grid-cols-2 gap-3">
-<div><label class="text-xs font-mono text-tactical-400">HOUSEHOLD</label><input type="number" id="profileHousehold" class="android-input mt-1" min="1" value="1" onchange="saveProfile()"></div>
-<div><label class="text-xs font-mono text-tactical-400">BLOOD TYPE</label><select id="profileBlood" class="android-select mt-1" onchange="saveProfile()"><option value="">Unknown</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
-</div>
-<div><label class="text-xs font-mono text-tactical-400">LOCATION</label><input type="text" id="profileLocation" class="android-input mt-1" placeholder="Metro Manila, Cebu..." onchange="saveProfile()"></div>
-<div><label class="text-xs font-mono text-tactical-400">EMERGENCY CONTACT</label><input type="text" id="profileEmergency" class="android-input mt-1" placeholder="Name + Phone..." onchange="saveProfile()"></div>
-<div><label class="text-xs font-mono text-tactical-400">SPECIAL SKILLS / NOTES</label><textarea id="profileNotes" class="android-textarea mt-1" placeholder="Medical training, ham radio, etc..." onchange="saveProfile()"></textarea></div>
-<button onclick="clearProfile()" class="android-btn android-btn-danger"><i class="fas fa-trash"></i>CLEAR PROFILE</button>
-</div>
-</div>
-</div>
-
-<!-- INVENTORY APP -->
-<div class="app-screen" id="app-inventory">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-boxes-stacked mr-2" style="color:#f59e0b"></i>INVENTORY</div>
-<div class="android-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b" id="inventoryBadge">0</div>
-</div>
-<div class="app-content">
-<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px;scrollbar-width:none">
-<button onclick="filterInventory('all')" class="inv-filter android-badge" style="background:#3d6b54;color:#fff;white-space:nowrap;border:none;cursor:pointer" data-f="all">ALL</button>
-<button onclick="filterInventory('water')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="water">WATER</button>
-<button onclick="filterInventory('food')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="food">FOOD</button>
-<button onclick="filterInventory('power')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="power">POWER</button>
-<button onclick="filterInventory('medical')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="medical">MEDICAL</button>
-<button onclick="filterInventory('shelter')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="shelter">SHELTER</button>
-<button onclick="filterInventory('tools')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="tools">TOOLS</button>
-<button onclick="filterInventory('other')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="other">OTHER</button>
-</div>
-<div class="inv-grid" id="inventoryGrid"></div>
-<button onclick="openAddItemModal()" class="android-btn android-btn-primary" style="margin-top:16px"><i class="fas fa-plus"></i>ADD ITEM</button>
-<button onclick="exportInventory()" class="android-btn" style="background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)"><i class="fas fa-file-export"></i>EXPORT DATA</button>
-</div>
-</div>
-
-<!-- CALCULATOR APP -->
-<div class="app-screen" id="app-calculator">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-calculator mr-2" style="color:#06b6d4"></i>CALCULATOR</div>
-</div>
-<div class="app-content">
-<div class="grid grid-cols-3 gap-3 mb-4">
-<div><label class="text-xs font-mono text-tactical-400">ADULTS</label><input type="number" id="calcAdults" class="android-input mt-1" value="2" min="0" onchange="calcSupplies()"></div>
-<div><label class="text-xs font-mono text-tactical-400">CHILDREN</label><input type="number" id="calcChildren" class="android-input mt-1" value="1" min="0" onchange="calcSupplies()"></div>
-<div><label class="text-xs font-mono text-tactical-400">DAYS</label><input type="number" id="calcDays" class="android-input mt-1" value="30" min="1" onchange="calcSupplies()"></div>
-</div>
-<div class="android-card">
-<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER</span><span class="text-xl font-black text-white font-mono" id="calcWater">0 gal</span></div>
-<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#3b82f6"></div></div>
-</div>
-<div class="android-card">
-<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-burger mr-2 text-orange-400"></i>FOOD</span><span class="text-xl font-black text-white font-mono" id="calcFood">0 cal</span></div>
-<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#f59e0b"></div></div>
-</div>
-<div class="android-card">
-<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-pills mr-2 text-red-400"></i>MED KITS</span><span class="text-xl font-black text-white font-mono" id="calcMed">0</span></div>
-<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#ef4444"></div></div>
-</div>
-<div class="android-card">
-<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-battery-full mr-2 text-yellow-400"></i>BATTERIES</span><span class="text-xl font-black text-white font-mono" id="calcBattery">0</span></div>
-<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#eab308"></div></div>
-</div>
-</div>
-</div>
-
-<!-- SUPPLIES APP -->
-<div class="app-screen" id="app-supplies">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-boxes-stacked mr-2" style="color:#ec4899"></i>SUPPLIES</div>
-</div>
-<div class="app-content" id="suppliesContent"></div>
-</div>
-
-<!-- INTEL APP -->
-<div class="app-screen" id="app-intel">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-satellite-dish mr-2" style="color:#6366f1"></i>INTEL</div>
-</div>
-<div class="app-content" id="intelContent"></div>
-</div>
-
-<!-- ALERTS APP -->
-<div class="app-screen" id="app-alerts">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-bell mr-2" style="color:#dc2626"></i>ALERTS</div>
-</div>
-<div class="app-content" id="alertsContent"></div>
-</div>
-
-<!-- SETTINGS APP -->
-<div class="app-screen" id="app-settings">
-<div class="app-header">
-<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
-<div class="app-title"><i class="fas fa-gear mr-2" style="color:#6b7280"></i>SETTINGS</div>
-</div>
-<div class="app-content">
-<div class="android-card">
-<div class="android-card-title" style="margin-bottom:12px">DATA MANAGEMENT</div>
-<button onclick="downloadOffline()" class="android-btn android-btn-primary"><i class="fas fa-download"></i>DOWNLOAD OFFLINE VERSION</button>
-<p class="text-xs text-tactical-400 mt-2">Save this page as a single HTML file for offline use</p>
-</div>
-<div class="android-card">
-<div class="android-card-title" style="margin-bottom:12px">DANGER ZONE</div>
-<button onclick="clearAllData()" class="android-btn android-btn-danger"><i class="fas fa-bomb"></i>CLEAR ALL LOCAL DATA</button>
-<p class="text-xs text-tactical-400 mt-2">Deletes profile, inventory, checklist - everything</p>
-</div>
-<div class="android-card">
-<div class="android-card-title" style="margin-bottom:12px">ABOUT</div>
-<p class="text-sm text-tactical-400">Operation Thermal Shield v2.0</p>
-<p class="text-xs text-tactical-500 mt-1">Super El Niño 2026 Preparedness</p>
-<p class="text-xs text-tactical-500">All data stored locally on device</p>
-</div>
-</div>
-</div>
-
-<!-- ==================== MODALS ==================== -->
-
-<!-- Avatar Modal -->
-<div class="android-modal" id="avatarModal">
-<div class="android-modal-sheet">
-<div class="android-modal-handle"></div>
-<div class="android-modal-title">PROFILE PHOTO</div>
-<p class="text-xs text-tactical-400 mb-4">Choose a photo. Stored locally, never uploaded.</p>
-<div class="space-y-3">
-<div class="file-input-wrapper" style="position:relative;overflow:hidden">
-<button class="android-btn android-btn-primary" style="margin-top:0"><i class="fas fa-camera"></i>TAKE PHOTO</button>
-<input type="file" accept="image/*" capture="camera" onchange="handleAvatar(event)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
-</div>
-<div class="file-input-wrapper" style="position:relative;overflow:hidden">
-<button class="android-btn" style="margin-top:0;background:rgba(45,74,62,0.3);color:#5a9e7a"><i class="fas fa-images"></i>CHOOSE FROM GALLERY</button>
-<input type="file" accept="image/*" onchange="handleAvatar(event)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
-</div>
-<button onclick="closeModal('avatarModal')" class="android-btn" style="margin-top:0;background:rgba(45,74,62,0.2);color:#5a9e7a">CANCEL</button>
-</div>
-</div>
-</div>
-
-<!-- Add Item Modal -->
-<div class="android-modal" id="itemModal">
-<div class="android-modal-sheet">
-<div class="android-modal-handle"></div>
-<div class="android-modal-title" id="itemModalTitle">ADD ITEM</div>
-<div class="space-y-3">
-<div><label class="text-xs font-mono text-tactical-400">ITEM NAME *</label><input type="text" id="itemName" class="android-input mt-1" placeholder="e.g. LifeStraw"></div>
-<div class="grid grid-cols-2 gap-3">
-<div><label class="text-xs font-mono text-tactical-400">CATEGORY</label><select id="itemCategory" class="android-select mt-1"><option value="water">Water</option><option value="food">Food</option><option value="power">Power</option><option value="medical">Medical</option><option value="shelter">Shelter</option><option value="tools">Tools</option><option value="other">Other</option></select></div>
-<div><label class="text-xs font-mono text-tactical-400">QUANTITY</label><input type="number" id="itemQty" class="android-input mt-1" value="1" min="1"></div>
-</div>
-<div><label class="text-xs font-mono text-tactical-400">PHOTO (Optional)</label>
-<div class="file-input-wrapper" style="position:relative;overflow:hidden">
-<button class="android-btn" style="margin-top:4px;background:rgba(45,74,62,0.2);color:#5a9e7a;font-size:12px;padding:10px"><i class="fas fa-camera mr-1"></i>ADD PHOTO</button>
-<input type="file" id="itemImageInput" accept="image/*" onchange="handleItemImage(event)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
-</div>
-<div id="itemImagePreview" style="display:none;margin-top:8px"><img src="" style="width:100%;height:120px;object-fit:cover;border-radius:10px;border:1px solid rgba(45,74,62,0.4)"><button onclick="clearItemImage()" style="margin-top:4px;color:#ef4444;font-size:11px;background:none;border:none;font-family:'JetBrains Mono',monospace"><i class="fas fa-times mr-1"></i>Remove</button></div>
-</div>
-<div><label class="text-xs font-mono text-tactical-400">NOTES</label><textarea id="itemNotes" class="android-textarea mt-1" placeholder="Expiry, location, condition..."></textarea></div>
-<button onclick="saveItem()" class="android-btn android-btn-primary"><i class="fas fa-save"></i>SAVE ITEM</button>
-<button onclick="closeModal('itemModal')" class="android-btn" style="background:rgba(45,74,62,0.2);color:#5a9e7a">CANCEL</button>
-</div>
-</div>
-</div>
-
-<!-- Toast -->
-<div class="android-toast" id="toast"></div>
-
-<script>
-// ==================== APP DEFINITIONS ====================
-const apps = [
-    {id:'dashboard',name:'Dashboard',icon:'fa-gauge-high',color:'app-dashboard',badge:0},
-    {id:'threats',name:'Threats',icon:'fa-triangle-exclamation',color:'app-threats',badge:0},
-    {id:'classes',name:'Classes',icon:'fa-layer-group',color:'app-classes',badge:0},
-    {id:'checklist',name:'Checklist',icon:'fa-list-check',color:'app-checklist',badge:0},
-    {id:'profile',name:'Profile',icon:'fa-user',color:'app-profile',badge:0},
-    {id:'inventory',name:'Inventory',icon:'fa-boxes-stacked',color:'app-inventory',badge:0},
-    {id:'calculator',name:'Calculator',icon:'fa-calculator',color:'app-calculator',badge:0},
-    {id:'supplies',name:'Supplies',icon:'fa-box-open',color:'app-supplies',badge:0},
-    {id:'intel',name:'Intel',icon:'fa-satellite-dish',color:'app-intel',badge:0},
-    {id:'alerts',name:'Alerts',icon:'fa-bell',color:'app-alerts',badge:2},
-    {id:'offline',name:'Offline',icon:'fa-download',color:'app-offline',badge:0},
-    {id:'settings',name:'Settings',icon:'fa-gear',color:'app-settings',badge:0}
-];
-
-// ==================== RENDER HOME SCREEN ====================
-function renderHome() {
-    const grid = document.getElementById('appGrid');
-    grid.innerHTML = apps.map(app => `
-        <div class="android-app" onclick="openApp('${app.id}')">
-            <div class="android-app-icon ${app.color}">
-                <i class="fas ${app.icon}" style="color:#fff"></i>
-                ${app.badge > 0 ? `<span class="badge">${app.badge}</span>` : ''}
-            </div>
-            <div class="android-app-label">${app.name}</div>
-        </div>
-    `).join('');
-}
-
-// ==================== APP NAVIGATION ====================
-let currentApp = null;
-
-function openApp(appId) {
-    const screen = document.getElementById('app-' + appId);
-    if (!screen) return;
-
-    // Close any open app first
-    if (currentApp) {
-        closeApp();
-        setTimeout(() => {
-            screen.classList.add('active');
-            currentApp = appId;
-            loadAppContent(appId);
-        }, 50);
-        return;
-    }
-
-    screen.classList.add('active');
-    currentApp = appId;
-    loadAppContent(appId);
-}
-
-function closeApp() {
-    if (!currentApp) return;
-    const screen = document.getElementById('app-' + currentApp);
-    screen.classList.add('closing');
-    setTimeout(() => {
-        screen.classList.remove('active', 'closing');
-        currentApp = null;
-    }, 250);
-}
-
-function loadAppContent(appId) {
-    switch(appId) {
-        case 'threats': renderThreats(); break;
-        case 'classes': renderClasses(); break;
-        case 'checklist': renderChecklist(); break;
-        case 'supplies': renderSupplies(); break;
-        case 'intel': renderIntel(); break;
-        case 'alerts': renderAlerts(); break;
-        case 'inventory': renderInventory(); break;
-    }
-}
-
-// ==================== THREATS ====================
-const threats = [
-    {icon:'fa-sun',color:'#f59e0b',title:'SEVERE DROUGHT',level:'HIGH RISK',items:['Crop failure & food insecurity','Water rationing & reservoir depletion','Wildfire risk amplification']},
-    {icon:'fa-water',color:'#3b82f6',title:'CATASTROPHIC FLOODING',level:'HIGH RISK',items:['River overflow & flash floods','Mudslides & structural collapse','Waterborne disease outbreaks']},
-    {icon:'fa-temperature-arrow-up',color:'#ef4444',title:'EXTREME HEAT',level:'EXTREME',items:['Heatstroke & mortality spikes','Grid failure from AC overload','Livestock & crop heat stress']},
-    {icon:'fa-truck-medical',color:'#ff6b35',title:'SUPPLY CHAIN COLLAPSE',level:'SYSTEMIC',items:['Fertilizer scarcity','Fuel price spikes & transport halt','Export controls & rationing']},
-    {icon:'fa-hurricane',color:'#5a9e7a',title:'PACIFIC TYPHOONS',level:'MODERATE',items:['Intensified Pacific hurricanes','Storm surge & coastal flooding','Single landfall = devastation']},
-    {icon:'fa-virus',color:'#a855f7',title:'HEALTH CRISES',level:'ELEVATED',items:['Mosquito-borne disease spread','Respiratory issues from haze/smoke','Contaminated water diseases']}
-];
-
-function renderThreats() {
-    document.getElementById('threatsContent').innerHTML = threats.map(t => `
-        <div class="android-card" style="border-left:3px solid ${t.color}">
-            <div class="android-card-header">
-                <div class="android-card-icon" style="background:${t.color}20;color:${t.color}"><i class="fas ${t.icon}"></i></div>
-                <div>
-                    <div class="android-card-title">${t.title}</div>
-                    <span class="android-badge" style="background:${t.color}20;color:${t.color};margin-top:4px">${t.level}</span>
-                </div>
-            </div>
-            <ul style="margin:0;padding:0;list-style:none">
-                ${t.items.map(i => `<li style="font-size:12px;color:#5a9e7a;padding:4px 0;border-bottom:1px solid rgba(45,74,62,0.1)"><i class="fas fa-caret-right mr-2" style="color:${t.color}"></i>${i}</li>`).join('')}
-            </ul>
-        </div>
-    `).join('');
-}
-
-// ==================== CLASSES ====================
-const classes = {
-    budget: {name:'BUDGET SURVIVOR',income:'<$30k / P1.7M',cost:'$50-150 / P2,900-8,700',color:'#22c55e',
-        water:['2L soda bottles','Rain barrels from drums','Boiling + cloth filter','Community well mapping'],
-        food:['Rice & beans bulk','Dried fish / ikan bilis','Root crops: kamote, cassava','Foraging guides'],
-        power:['Hand-crank radio','Candles + matches','Car battery inverter','Solar bottle lights'],
-        shelter:['DIY sandbags','Plastic tarpaulins','Mosquito nets (DOH)','Raised platforms'],
-        medical:['Generic pharmacy meds','Herbal: lagundi, sambong','Barangay health center','Free vaccinations'],
-        evac:['Repurposed backpack','Foot routes memorized','Barangay assembly point','Relative network']},
-    citizen: {name:'TACTICAL CITIZEN',income:'$30-75k / P1.7-4.3M',cost:'$300-800 / P17,400-46,400',color:'#3b82f6',
-        water:['Aqua-Tainer 7-gal x4','LifeStraw Family filter','Rainwater catchment','Bleach purification'],
-        food:['30-day canned/dried stock','Propane stove + 4 tanks','Mylar + O2 absorbers','Sprouting jars'],
-        power:['2x 20,000mAh banks','20W solar panel','LED lantern set','Car inverter'],
-        shelter:['Commercial sandbags (50)','Portable sump pump','Pre-cut plywood','2x ABC extinguishers'],
-        medical:['Adventure Medical Kit 2.0','90-day prescriptions','Water purification tabs','N95 masks (20)'],
-        evac:['72hr bug-out bags','Roof rack cargo box','Physical maps + offline GPS','$300 cash stash']},
-    operator: {name:'OPERATOR CLASS',income:'$75-150k / P4.3-8.7M',cost:'$1,500-5,000 / P87,000-290,000',color:'#f59e0b',
-        water:['Berkey Big Berkey','500-gal cistern','UV SteriPen Ultra','Well pump + hand backup'],
-        food:['90-day freeze-dried','Home canning setup','Solar dehydrator','Hunting/fishing gear'],
-        power:['Jackery 1000 + solar','Honda EU2200i','Deep cycle battery bank','Whole-house surge'],
-        shelter:['Quick Dam barriers','Backup sump system','Storm shutters','Safe room'],
-        medical:['Tactical trauma kit','Antibiotics stock','Dental emergency kit','Pulse oximeter + BP cuff'],
-        evac:['4WD vehicle kit','Ham radio + Baofeng','Cache locations mapped','Secondary property']},
-    elite: {name:'COMMAND ELITE',income:'>$150k / P8.7M+',cost:'$10,000+ / P580,000+',color:'#ef4444',
-        water:['Whole-house harvesting','RO + UV + charcoal','Borehole solar pump','Pool conversion kit'],
-        food:['1-year+ professional storage','Aquaponics/hydroponics','Livestock: chickens, goats','Solar freezer'],
-        power:['Tesla Powerwall + 10kW','20kW diesel + 500gal','Auto transfer switch','Faraday cage'],
-        shelter:['Architectural flood-proofing','FEMA storm shelter','Fire suppression system','Perimeter security'],
-        medical:['24/7 telemedicine','Professional dental kit','AED defibrillator','EMT certification'],
-        evac:['Multiple properties','Prepared vehicle fleet','Air evacuation retainer','Offshore assets']}
-};
-
-let activeClass = 'budget';
-
-function renderClasses() {
-    const c = classes[activeClass];
-    const cats = ['water','food','power','shelter','medical','evac'];
-    const catIcons = {water:'fa-droplet',food:'fa-burger',power:'fa-bolt',shelter:'fa-house-crack',medical:'fa-kit-medical',evac:'fa-car'};
-
-    document.getElementById('classesContent').innerHTML = `
-        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px;scrollbar-width:none">
-            ${Object.keys(classes).map(k => `
-                <button onclick="setClass('${k}')" class="android-badge" style="background:${k===activeClass?classes[k].color:'rgba(45,74,62,0.3)'};color:${k===activeClass?'#fff':'#5a9e7a'};white-space:nowrap;border:none;cursor:pointer;font-size:11px;padding:6px 12px">
-                    ${classes[k].name.split(' ')[0]}
-                </button>
-            `).join('')}
-        </div>
-        <div class="android-card" style="border-color:${c.color}40">
-            <div class="android-card-header">
-                <div class="android-card-icon" style="background:${c.color}20;color:${c.color}"><i class="fas fa-shield-halved"></i></div>
-                <div>
-                    <div class="android-card-title" style="color:${c.color}">${c.name}</div>
-                    <div class="android-card-sub">${c.income}</div>
-                </div>
-            </div>
-            <div class="android-badge" style="background:${c.color}20;color:${c.color};margin-bottom:12px">SETUP: ${c.cost}</div>
-            <div style="display:grid;gap:8px">
-                ${cats.map(cat => `
-                    <div style="background:rgba(45,74,62,0.15);border-radius:10px;padding:10px">
-                        <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:${c.color};margin-bottom:4px"><i class="fas ${catIcons[cat]} mr-1"></i>${cat.toUpperCase()}</div>
-                        ${c[cat].map(item => `<div style="font-size:12px;color:#e2e8f0;padding:2px 0"><span style="color:${c.color}">></span> ${item}</div>`).join('')}
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
-}
-
-function setClass(cls) {
-    activeClass = cls;
-    renderClasses();
-}
-
-// ==================== CHECKLIST ====================
-const checklistItems = [
-    {cat:'WATER & FOOD',icon:'fa-droplet',color:'#3b82f6',items:['1 gallon water/person/day (14+ days)','Water purification tablets/filters','Rainwater harvesting barrels','30+ day non-perishable food supply','Manual can opener + camp stove','Electrolyte packets & ORS']},
-    {cat:'POWER & COMMS',icon:'fa-bolt',color:'#eab308',items:['Portable generator + fuel','Solar panels + power station','Hand-crank NOAA weather radio','Power banks + extra batteries','Two-way radios (walkie-talkies)','Faraday bag for electronics']},
-    {cat:'HOME FORTIFICATION',icon:'fa-house-crack',color:'#f97316',items:['Sandbags (50+), tarps, duct tape','Sump pump + battery backup','Gutter guards, roof inspected','Waterproof document safe','Fire-resistant landscaping','Window boards/shutters']},
-    {cat:'MEDICAL & HYGIENE',icon:'fa-kit-medical',color:'#ef4444',items:['Comprehensive first aid kit','90-day prescription supply','N95 masks, water purif. tabs','Mosquito nets, repellent','Hygiene: wipes, sanitizer, soap','Portable toilet / waste bags']},
-    {cat:'VEHICLE & EVAC',icon:'fa-car',color:'#9ca3af',items:['72hr bug-out bag per person','Full tank + 20gal spare fuel','Physical maps + evac routes','Emergency whistle, signal mirror','$500+ cash stash small bills','Firearms/self-defense (if legal)']}
-];
-
-let checklistState = {};
-
-function renderChecklist() {
-    const saved = localStorage.getItem('el_nino_checklist');
-    if (saved) checklistState = JSON.parse(saved);
-
-    document.getElementById('checklistContent').innerHTML = checklistItems.map((section, si) => `
-        <div class="android-card" style="margin-bottom:12px">
-            <div class="android-card-header">
-                <div class="android-card-icon" style="background:${section.color}20;color:${section.color}"><i class="fas ${section.icon}"></i></div>
-                <div class="android-card-title">${section.cat}</div>
-            </div>
-            ${section.items.map((item, ii) => {
-                const key = `${si}_${ii}`;
-                const checked = checklistState[key] || false;
-                return `
-                    <label class="android-check ${checked?'checked':''}" onclick="toggleCheck('${key}',this)">
-                        <input type="checkbox" ${checked?'checked':''} style="display:none">
-                        <span class="android-check-text ${checked?'checked':''}">${item}</span>
-                    </label>
-                `;
-            }).join('')}
-        </div>
-    `).join('');
-    updateChecklistStats();
-}
-
-function toggleCheck(key, el) {
-    const checkbox = el.querySelector('input');
-    checkbox.checked = !checkbox.checked;
-    checklistState[key] = checkbox.checked;
-    el.classList.toggle('checked', checkbox.checked);
-    el.querySelector('.android-check-text').classList.toggle('checked', checkbox.checked);
-    localStorage.setItem('el_nino_checklist', JSON.stringify(checklistState));
-    updateChecklistStats();
-}
-
-function updateChecklistStats() {
-    const total = Object.keys(checklistState).length;
-    const checked = Object.values(checklistState).filter(v => v).length;
-    const pct = total > 0 ? Math.round((checked / 25) * 100) : 0;
-    document.getElementById('checklistBadge').textContent = pct + '%';
-    document.getElementById('widgetReadiness').textContent = pct + '%';
-    document.getElementById('appReadinessSub').textContent = pct + '% complete';
-    document.getElementById('appReadinessBar').style.width = pct + '%';
-}
-
-// ==================== SUPPLIES ====================
-const supplyItems = [
-    {icon:'fa-bottle-water',color:'#ff6b35',title:'Water Storage',desc:'7-gal Aqua-Tainers, rain barrels',level:'CRITICAL'},
-    {icon:'fa-utensils',color:'#f59e0b',title:'Long-Term Food',desc:'Rice, beans, oats, honey, MREs',level:'CRITICAL'},
-    {icon:'fa-lightbulb',color:'#eab308',title:'Lighting',desc:'LED lanterns, headlamps, candles',level:'HIGH'},
-    {icon:'fa-temperature-low',color:'#3b82f6',title:'Climate Control',desc:'Battery fans, cooling towels, tarps',level:'HIGH'},
-    {icon:'fa-fire-extinguisher',color:'#ef4444',title:'Fire Safety',desc:'ABC extinguishers, blankets, detectors',level:'HIGH'},
-    {icon:'fa-shield-virus',color:'#a855f7',title:'PPE & Sanitation',desc:'N95s, gloves, bleach, toilet',level:'HIGH'},
-    {icon:'fa-seedling',color:'#22c55e',title:'Survival Seeds',desc:'Heirloom seeds, sprouting kits',level:'MEDIUM'},
-    {icon:'fa-toolbox',color:'#9ca3af',title:'Tools',desc:'Multi-tool, axe, shovel, rope',level:'MEDIUM'}
-];
-
-function renderSupplies() {
-    document.getElementById('suppliesContent').innerHTML = supplyItems.map(s => `
-        <div class="android-list-item">
-            <div class="android-list-icon" style="background:${s.color}20;color:${s.color}"><i class="fas ${s.icon}"></i></div>
-            <div class="android-list-content">
-                <div class="android-list-title">${s.title}</div>
-                <div class="android-list-desc">${s.desc}</div>
-            </div>
-            <span class="android-badge" style="background:${s.color}20;color:${s.color};flex-shrink:0">${s.level}</span>
-        </div>
-    `).join('');
-}
-
-// ==================== INTEL ====================
-const intelItems = [
-    {time:'06:42 UTC',color:'#ef4444',title:'WMO: 80% El Niño Probability',text:'Sea surface temps approaching threshold. Subsurface heat +6°C above average.'},
-    {time:'05:15 UTC',color:'#f59e0b',title:'IFRC: Action Protocols Activated',text:'Red Cross scaling preparedness in Central America and Caribbean.'},
-    {time:'03:30 UTC',color:'#ff6b35',title:'Philippines Updates Action Plan',text:'Agriculture, energy, health sectors on alert. Cash transfers authorized.'},
-    {time:'02:00 UTC',color:'#3b82f6',title:'ECMWF: Wetter Conditions Expected',text:'Southern US, Peru, Ecuador forecast above-average rainfall.'},
-    {time:'00:15 UTC',color:'#a855f7',title:'WEF: Systemic Shock Warning',text:'Rice supply chains at risk. Fuel/fertilizer shortages compound climate risk.'}
-];
-
-function renderIntel() {
-    document.getElementById('intelContent').innerHTML = intelItems.map(i => `
-        <div class="android-card" style="border-left:3px solid ${i.color};padding:12px 16px">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
-                <div>
-                    <div style="font-size:10px;color:#5a9e7a;font-family:'JetBrains Mono',monospace">${i.time}</div>
-                    <div style="font-size:14px;font-weight:700;color:#fff;margin-top:2px">${i.title}</div>
-                    <div style="font-size:12px;color:#5a9e7a;margin-top:4px">${i.text}</div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-// ==================== ALERTS (DISASTER) ====================
-let eqData = [];
-let typhoonData = [
-    {name:'Typhoon Chaba',cat:'Cat 3',wind:'185 km/h',loc:'Philippine Sea',status:'active',region:'philippines',color:'#f59e0b'},
-    {name:'Tropical Storm Aere',cat:'TS',wind:'85 km/h',loc:'South China Sea',status:'active',region:'china',color:'#3b82f6'},
-    {name:'Typhoon Songda',cat:'Cat 4',wind:'210 km/h',loc:'Western Pacific',status:'active',region:'pacific',color:'#ef4444'},
-    {name:'TD 07W',cat:'TD',wind:'55 km/h',loc:'East of Visayas',status:'active',region:'philippines',color:'#5a9e7a'},
-    {name:'Typhoon Meari',cat:'Cat 2',wind:'165 km/h',loc:'Sea of Japan',status:'dissipating',region:'japan',color:'#f59e0b'}
-];
-let volcanoData = [
-    {name:'Mayon Volcano',alert:'Alert Level 2',loc:'Philippines',type:'volcano',color:'#f59e0b'},
-    {name:'Taal Volcano',alert:'Alert Level 1',loc:'Philippines',type:'volcano',color:'#ff6b35'},
-    {name:'Mt. Pinatubo',alert:'Normal',loc:'Philippines',type:'volcano',color:'#5a9e7a'},
-    {name:'Pacific Tsunami',alert:'Advisory',loc:'Pacific Basin',type:'tsunami',color:'#3b82f6'},
-    {name:'Kilauea',alert:'Watch',loc:'Hawaii',type:'volcano',color:'#ef4444'}
-];
-
-async function fetchEarthquakes() {
-    try {
-        const res = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_hour.geojson');
-        const data = await res.json();
-        eqData = (data.features || []).slice(0, 8);
-    } catch(e) { console.log('EQ fetch failed'); }
-}
-
-function renderAlerts() {
-    const content = document.getElementById('alertsContent');
-
-    content.innerHTML = `
-        <div class="android-card" style="border-color:rgba(239,68,68,0.3)">
-            <div class="android-card-title" style="color:#ef4444;margin-bottom:8px"><i class="fas fa-house-crack mr-2"></i>EARTHQUAKES (USGS)</div>
-            ${eqData.length === 0 ? '<div style="font-size:12px;color:#5a9e7a">Loading seismic data...</div>' : eqData.map(eq => {
-                const m = eq.properties.mag;
-                let c = '#5a9e7a'; if(m>=7)c='#ef4444'; else if(m>=6)c='#f59e0b'; else if(m>=5)c='#ff6b35';
-                return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,74,62,0.2)">
-                    <div style="font-size:18px;font-weight:800;color:${c};font-family:'JetBrains Mono',monospace;min-width:45px">${m.toFixed(1)}</div>
-                    <div style="flex:1;min-width:0">
-                        <div style="font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${eq.properties.place}</div>
-                        <div style="font-size:10px;color:#5a9e7a">${new Date(eq.properties.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false})} UTC | ${eq.properties.depth.toFixed(1)}km</div>
-                    </div>
-                    ${eq.properties.tsunami ? '<span class="android-badge" style="background:#ef444420;color:#ef4444;flex-shrink:0">TSUNAMI</span>' : ''}
-                </div>`;
-            }).join('')}
-        </div>
-
-        <div class="android-card" style="border-color:rgba(59,130,246,0.3)">
-            <div class="android-card-title" style="color:#3b82f6;margin-bottom:8px"><i class="fas fa-hurricane mr-2"></i>TYPHOONS / CYCLONES</div>
-            ${typhoonData.filter(t => t.status === 'active').map(t => `
-                <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,74,62,0.2)">
-                    <div class="android-list-icon" style="background:${t.color}20;color:${t.color};width:32px;height:32px;font-size:14px"><i class="fas fa-hurricane"></i></div>
-                    <div style="flex:1;min-width:0">
-                        <div style="font-size:12px;color:#fff;font-weight:600">${t.name}</div>
-                        <div style="font-size:10px;color:#5a9e7a">${t.cat} | ${t.wind} | ${t.loc}</div>
-                    </div>
-                    ${t.region === 'philippines' ? '<span class="android-badge" style="background:#ef444420;color:#ef4444;flex-shrink:0">PH</span>' : ''}
-                </div>
-            `).join('')}
-        </div>
-
-        <div class="android-card" style="border-color:rgba(245,158,11,0.3)">
-            <div class="android-card-title" style="color:#f59e0b;margin-bottom:8px"><i class="fas fa-volcano mr-2"></i>VOLCANO & TSUNAMI</div>
-            ${volcanoData.map(v => `
-                <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,74,62,0.2)">
-                    <div class="android-list-icon" style="background:${v.color}20;color:${v.color};width:32px;height:32px;font-size:14px"><i class="fas ${v.type==='volcano'?'fa-volcano':'fa-water'}"></i></div>
-                    <div style="flex:1;min-width:0">
-                        <div style="font-size:12px;color:#fff;font-weight:600">${v.name}</div>
-                        <div style="font-size:10px;color:#5a9e7a">${v.loc} | ${v.alert}</div>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
-            <div class="android-card" style="text-align:center;padding:12px">
-                <div style="font-size:24px;font-weight:800;color:#ef4444;font-family:'JetBrains Mono',monospace">${eqData.length}</div>
-                <div style="font-size:10px;color:#5a9e7a">QUAKES (M4.5+)</div>
-            </div>
-            <div class="android-card" style="text-align:center;padding:12px">
-                <div style="font-size:24px;font-weight:800;color:#3b82f6;font-family:'JetBrains Mono',monospace">${typhoonData.filter(t=>t.status==='active').length}</div>
-                <div style="font-size:10px;color:#5a9e7a">ACTIVE STORMS</div>
-            </div>
-            <div class="android-card" style="text-align:center;padding:12px">
-                <div style="font-size:24px;font-weight:800;color:#f59e0b;font-family:'JetBrains Mono',monospace">${volcanoData.filter(v=>v.alert!=='Normal').length}</div>
-                <div style="font-size:10px;color:#5a9e7a">VOLCANO ALERTS</div>
-            </div>
-            <div class="android-card" style="text-align:center;padding:12px">
-                <div style="font-size:24px;font-weight:800;color:#ff6b35;font-family:'JetBrains Mono',monospace">1</div>
-                <div style="font-size:10px;color:#5a9e7a">TSUNAMI WATCH</div>
-            </div>
-        </div>
-    `;
-}
-
-// ==================== INVENTORY ====================
-let inventory = [];
-let invFilter = 'all';
-let tempItemImage = null;
-let editingItemId = null;
-
-function loadInventory() {
-    inventory = JSON.parse(localStorage.getItem('el_nino_inventory') || '[]');
-    renderInventory();
-}
-
-function renderInventory() {
-    const grid = document.getElementById('inventoryGrid');
-    const filtered = invFilter === 'all' ? inventory : inventory.filter(i => i.category === invFilter);
-
-    grid.innerHTML = filtered.map(item => `
-        <div class="inv-slot filled" onclick="editItem('${item.id}')">
-            ${item.image ? `<img src="${item.image}" class="inv-slot-img">` : `<i class="fas fa-box inv-slot-icon"></i>`}
-            <div class="inv-slot-name">${item.name}</div>
-            <div class="inv-slot-qty">x${item.qty}</div>
-            <button class="inv-slot-del" onclick="event.stopPropagation();deleteItem('${item.id}')">×</button>
-        </div>
-    `).join('');
-
-    document.getElementById('inventoryBadge').textContent = inventory.length;
-}
-
-function filterInventory(cat) {
-    invFilter = cat;
-    document.querySelectorAll('.inv-filter').forEach(b => {
-        b.style.background = b.dataset.f === cat ? '#3d6b54' : 'rgba(45,74,62,0.3)';
-        b.style.color = b.dataset.f === cat ? '#fff' : '#5a9e7a';
-    });
-    renderInventory();
-}
-
-function openAddItemModal() {
-    editingItemId = null;
-    tempItemImage = null;
-    document.getElementById('itemModalTitle').textContent = 'ADD ITEM';
-    document.getElementById('itemName').value = '';
-    document.getElementById('itemCategory').value = 'water';
-    document.getElementById('itemQty').value = '1';
-    document.getElementById('itemNotes').value = '';
-    document.getElementById('itemImagePreview').style.display = 'none';
-    document.getElementById('itemImageInput').value = '';
-    openModal('itemModal');
-}
-
-function editItem(id) {
-    const item = inventory.find(i => i.id === id);
-    if (!item) return;
-    editingItemId = id;
-    tempItemImage = item.image || null;
-    document.getElementById('itemModalTitle').textContent = 'EDIT ITEM';
-    document.getElementById('itemName').value = item.name;
-    document.getElementById('itemCategory').value = item.category;
-    document.getElementById('itemQty').value = item.qty;
-    document.getElementById('itemNotes').value = item.notes || '';
-    if (item.image) {
-        document.getElementById('itemImagePreview').querySelector('img').src = item.image;
-        document.getElementById('itemImagePreview').style.display = 'block';
-    } else {
-        document.getElementById('itemImagePreview').style.display = 'none';
-    }
-    openModal('itemModal');
-}
-
-function saveItem() {
-    const name = document.getElementById('itemName').value.trim();
-    if (!name) { showToast('Name required', true); return; }
-
-    const item = {
-        id: editingItemId || 'item_' + Date.now(),
-        name,
-        category: document.getElementById('itemCategory').value,
-        qty: parseInt(document.getElementById('itemQty').value) || 1,
-        notes: document.getElementById('itemNotes').value.trim(),
-        image: tempItemImage || ''
-    };
-
-    if (editingItemId) {
-        const idx = inventory.findIndex(i => i.id === editingItemId);
-        if (idx !== -1) inventory[idx] = item;
-    } else {
-        inventory.push(item);
-    }
-
-    localStorage.setItem('el_nino_inventory', JSON.stringify(inventory));
-    renderInventory();
-    closeModal('itemModal');
-    showToast(editingItemId ? 'Item updated' : 'Item added');
-}
-
-function deleteItem(id) {
-    if (!confirm('Delete this item?')) return;
-    inventory = inventory.filter(i => i.id !== id);
-    localStorage.setItem('el_nino_inventory', JSON.stringify(inventory));
-    renderInventory();
-    showToast('Item deleted');
-}
-
-function handleItemImage(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 1024 * 1024) { showToast('Max 1MB', true); return; }
-    const reader = new FileReader();
-    reader.onload = ev => {
-        tempItemImage = ev.target.result;
-        document.getElementById('itemImagePreview').querySelector('img').src = tempItemImage;
-        document.getElementById('itemImagePreview').style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-}
-
-function clearItemImage() {
-    tempItemImage = null;
-    document.getElementById('itemImagePreview').style.display = 'none';
-    document.getElementById('itemImageInput').value = '';
-}
-
-function exportInventory() {
-    if (inventory.length === 0) { showToast('Inventory empty', true); return; }
-    const data = {profile: JSON.parse(localStorage.getItem('el_nino_profile')||'{}'), inventory, exported: new Date().toISOString()};
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'el_nino_data_' + new Date().toISOString().split('T')[0] + '.json';
-    a.click(); URL.revokeObjectURL(url);
-    showToast('Data exported');
-}
-
-// ==================== PROFILE ====================
-function loadProfile() {
-    const p = JSON.parse(localStorage.getItem('el_nino_profile') || '{}');
-    if (p.name) document.getElementById('profileName').value = p.name;
-    if (p.class) document.getElementById('profileClass').value = p.class;
-    if (p.household) document.getElementById('profileHousehold').value = p.household;
-    if (p.location) document.getElementById('profileLocation').value = p.location;
-    if (p.blood) document.getElementById('profileBlood').value = p.blood;
-    if (p.emergency) document.getElementById('profileEmergency').value = p.emergency;
-    if (p.notes) document.getElementById('profileNotes').value = p.notes;
-    const avatar = localStorage.getItem('el_nino_avatar');
-    if (avatar) {
-        document.getElementById('avatarImg').src = avatar;
-        document.getElementById('avatarImg').style.display = 'block';
-        document.getElementById('avatarIcon').style.display = 'none';
-    }
-}
-
-function saveProfile() {
-    const p = {
-        name: document.getElementById('profileName').value,
-        class: document.getElementById('profileClass').value,
-        household: document.getElementById('profileHousehold').value,
-        location: document.getElementById('profileLocation').value,
-        blood: document.getElementById('profileBlood').value,
-        emergency: document.getElementById('profileEmergency').value,
-        notes: document.getElementById('profileNotes').value
-    };
-    localStorage.setItem('el_nino_profile', JSON.stringify(p));
-    showToast('Profile saved');
-}
-
-function clearProfile() {
-    if (!confirm('Clear profile?')) return;
-    localStorage.removeItem('el_nino_profile');
-    localStorage.removeItem('el_nino_avatar');
-    document.getElementById('profileName').value = '';
-    document.getElementById('profileClass').value = '';
-    document.getElementById('profileHousehold').value = '1';
-    document.getElementById('profileLocation').value = '';
-    document.getElementById('profileBlood').value = '';
-    document.getElementById('profileEmergency').value = '';
-    document.getElementById('profileNotes').value = '';
-    document.getElementById('avatarImg').src = '';
-    document.getElementById('avatarImg').style.display = 'none';
-    document.getElementById('avatarIcon').style.display = 'block';
-    showToast('Profile cleared');
-}
-
-function handleAvatar(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { showToast('Max 2MB', true); return; }
-    const reader = new FileReader();
-    reader.onload = ev => {
-        localStorage.setItem('el_nino_avatar', ev.target.result);
-        document.getElementById('avatarImg').src = ev.target.result;
-        document.getElementById('avatarImg').style.display = 'block';
-        document.getElementById('avatarIcon').style.display = 'none';
-        saveProfile();
-        closeModal('avatarModal');
-        showToast('Photo saved');
-    };
-    reader.readAsDataURL(file);
-}
-
-// ==================== CALCULATOR ====================
-function calcSupplies() {
-    const adults = parseInt(document.getElementById('calcAdults').value) || 0;
-    const children = parseInt(document.getElementById('calcChildren').value) || 0;
-    const days = parseInt(document.getElementById('calcDays').value) || 1;
-    const total = adults + children;
-    document.getElementById('calcWater').textContent = (total * days) + ' gal';
-    document.getElementById('calcFood').textContent = (((adults * 2000) + (children * 1400)) * days).toLocaleString() + ' cal';
-    document.getElementById('calcMed').textContent = Math.ceil(total / 4);
-    document.getElementById('calcBattery').textContent = Math.ceil(total * (days / 14));
-}
-
-// ==================== MODAL HELPERS ====================
-function openModal(id) { document.getElementById(id).classList.add('active'); }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-function openAvatarModal() { openModal('avatarModal'); }
-
-// ==================== TOAST ====================
-function showToast(msg, err) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'android-toast' + (err ? ' error' : '');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// ==================== OFFLINE DOWNLOAD ====================
-function downloadOffline() {
-    const html = document.documentElement.outerHTML;
-    const blob = new Blob([html], {type:'text/html'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'el_nino_command_offline.html';
-    a.click(); URL.revokeObjectURL(url);
-    showToast('Offline file downloaded!');
-}
-
-function clearAllData() {
-    if (!confirm('DELETE EVERYTHING? Profile, inventory, checklist - all gone.')) return;
-    localStorage.clear();
-    inventory = [];
-    checklistState = {};
-    showToast('All data wiped');
-    setTimeout(() => location.reload(), 500);
-}
-
-// ==================== CLOCK ====================
-function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    document.getElementById('androidClock').textContent = h + ':' + m;
-    document.getElementById('androidStatusTime').textContent = h + ':' + m;
-    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    document.getElementById('androidDate').textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate();
-}
-
-// ==================== INIT ====================
-document.addEventListener('DOMContentLoaded', () => {
-    renderHome();
-    loadProfile();
-    loadInventory();
-    updateClock();
-    setInterval(updateClock, 1000);
-    fetchEarthquakes();
-    setInterval(fetchEarthquakes, 60000);
-
-    // Swipe to close apps
-    let touchStartY = 0;
-    document.querySelectorAll('.app-screen').forEach(screen => {
-        screen.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
-        screen.addEventListener('touchend', e => {
-            const diff = e.changedTouches[0].clientY - touchStartY;
-            if (diff > 100) closeApp();
-        });
-    });
-
-    // Close modals on backdrop tap
-    document.querySelectorAll('.android-modal').forEach(m => {
-        m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
-    });
-});
-</script>
+        function deleteItem(id) {
+            if (confirm("Remove this item?")) {
+                inventory = inventory.filter(i => i.id !== id);
+                renderInventory();
+                saveInventory();
+            }
+        }
+
+        function addInventorySlot() {
+            const name = prompt("Item name (e.g. Canned Beans):");
+            if (!name) return;
+            const category = prompt("Category (Water / Food / Medical / Power / Other):", "Food") || "Other";
+            
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                qty: 0,
+                category: category
+            };
+            inventory.push(newItem);
+            renderInventory();
+            saveInventory();
+        }
+
+        function openInventory() {
+            document.getElementById('inventory').classList.remove('hidden');
+            document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
+            loadInventory();
+        }
+
+        // ==================== UTILITIES ====================
+        function smoothScrollTo(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Init
+        window.onload = function() {
+            loadProfile();
+            console.log('%cSHIELD SYSTEM ONLINE — All data stored locally', 'color:#fbbf24; font-family:monospace');
+        };
+    </script>
 </body>
 </html>
