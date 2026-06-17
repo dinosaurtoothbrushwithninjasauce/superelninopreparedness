@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Super El Niño 2026 Preparedness | Tactical Survival Command</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0f0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>El Nino Command</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -26,127 +29,191 @@ tailwind.config = {
 }
 </script>
 <style>
-body{background-color:#0a0f0d;color:#e2e8f0}
-.scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent 50%,rgba(0,255,128,0.02) 50%);background-size:100% 4px;pointer-events:none;z-index:50}
-.grid-bg{background-image:linear-gradient(rgba(45,74,62,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(45,74,62,0.1) 1px,transparent 1px);background-size:20px 20px}
+/* Base */
+body{background-color:#0a0f0d;color:#e2e8f0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+.scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent 50%,rgba(0,255,128,0.015) 50%);background-size:100% 4px;pointer-events:none;z-index:50}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0f0d}
+::-webkit-scrollbar-thumb{background:#2d4a3e;border-radius:3px}
+
+/* Desktop Layout */
+.desktop-only{display:block}
+.mobile-only{display:none}
+
+/* Mobile App Launcher */
+.mobile-home{position:fixed;inset:0;background:#0a0f0d;z-index:90;overflow-y:auto;overflow-x:hidden;padding-bottom:80px;display:none}
+.mobile-home.active{display:block}
+.mobile-home::-webkit-scrollbar{display:none}
+
+.mobile-status-bar{height:28px;background:#0a0f0d;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#5a9e7a;position:sticky;top:0;z-index:10}
+.mobile-status-bar .time{font-weight:700}
+
+.mobile-app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 8px;padding:20px 16px}
+.mobile-app-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.15s ease}
+.mobile-app-item:active{transform:scale(0.92)}
+.mobile-app-icon{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;position:relative;box-shadow:0 4px 15px rgba(0,0,0,0.4)}
+.mobile-app-icon .badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px;font-family:'JetBrains Mono',monospace}
+.mobile-app-icon .live-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+.mobile-app-label{font-size:11px;color:#b0c4b1;text-align:center;font-family:'Inter',sans-serif;font-weight:500;max-width:70px;line-height:1.2}
+
+.mobile-dock{position:fixed;bottom:0;left:0;right:0;background:rgba(10,15,13,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(45,74,62,0.3);padding:10px 20px 24px;display:flex;justify-content:space-around;z-index:100}
+.mobile-dock-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.15s ease}
+.mobile-dock-item:active{transform:scale(0.9)}
+.mobile-dock-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 3px 12px rgba(0,0,0,0.3)}
+
+/* Mobile App Pages */
+.mobile-page{position:fixed;inset:0;background:#0a0f0d;z-index:95;display:none;flex-direction:column;overflow:hidden}
+.mobile-page.active{display:flex}
+.mobile-page-header{height:52px;background:rgba(10,15,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(45,74,62,0.3);display:flex;align-items:center;padding:0 12px;flex-shrink:0;z-index:5}
+.mobile-page-back{width:36px;height:36px;border-radius:50%;background:rgba(45,74,62,0.3);display:flex;align-items:center;justify-content:center;color:#5a9e7a;font-size:16px;cursor:pointer;margin-right:10px;transition:all 0.2s}
+.mobile-page-back:active{background:rgba(45,74,62,0.6)}
+.mobile-page-title{flex:1;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobile-page-actions{display:flex;gap:8px}
+.mobile-page-action{width:36px;height:36px;border-radius:50%;background:rgba(45,74,62,0.3);display:flex;align-items:center;justify-content:center;color:#5a9e7a;font-size:14px;cursor:pointer}
+.mobile-page-content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.mobile-page-content::-webkit-scrollbar{width:4px}
+.mobile-page-content::-webkit-scrollbar-thumb{background:#2d4a3e;border-radius:2px}
+
+/* App icon colors */
+.app-dashboard{background:linear-gradient(135deg,#1a2e24,#2d4a3e);color:#5a9e7a}
+.app-threats{background:linear-gradient(135deg,#3d1f1f,#5a2a2a);color:#ef4444}
+.app-classes{background:linear-gradient(135deg,#1f2d3d,#2a3d5a);color:#3b82f6}
+.app-checklist{background:linear-gradient(135deg,#2d2d1f,#5a5a2a);color:#f59e0b}
+.app-profile{background:linear-gradient(135deg,#2d1f3d,#4a2a5a);color:#a78bfa}
+.app-inventory{background:linear-gradient(135deg,#1f3d2d,#2a5a3d);color:#22c55e}
+.app-supplies{background:linear-gradient(135deg,#3d2d1f,#5a4a2a);color:#ff6b35}
+.app-calculator{background:linear-gradient(135deg,#1f2d2d,#2a4a4a);color:#22d3ee}
+.app-intel{background:linear-gradient(135deg,#2d1f1f,#4a2a2a);color:#f87171}
+.app-alerts{background:linear-gradient(135deg,#3d1f1f,#5a2020);color:#ef4444}
+.app-offline{background:linear-gradient(135deg,#1f1f2d,#2a2a4a);color:#818cf8}
+
+/* Widget on home */
+.mobile-widget{background:rgba(26,46,36,0.4);border:1px solid rgba(45,74,62,0.3);border-radius:16px;padding:14px;margin:0 16px 16px}
+.widget-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.widget-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:#5a9e7a;font-weight:700}
+.widget-value{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:#ef4444}
+.widget-sub{font-size:10px;color:#6b8f6e;margin-top:2px}
+
+/* Common styles */
 .threat-level{box-shadow:0 0 20px rgba(239,68,68,0.3)}
-.supply-card{transition:all 0.3s ease}
-.supply-card:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(45,74,62,0.3)}
-.check-item{transition:all 0.2s ease}
+.check-item{transition:all 0.2s ease;padding:10px;border-radius:8px;display:flex;align-items:center;gap:10px}
 .check-item.checked{background:rgba(45,74,62,0.3);border-left:3px solid #5a9e7a}
+.check-item input[type="checkbox"]{width:20px;height:20px;accent-color:#3d6b54;flex-shrink:0}
+.check-item span{font-size:13px;color:#d1d5db;line-height:1.4}
 .progress-bar{transition:width 0.5s ease}
-.radar-ping{animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite}
-@keyframes ping{75%,100%{transform:scale(2);opacity:0}}
+.tier-badge{display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+
+/* Profile */
+.profile-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #3d6b54;background:#1a2e24;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:0 auto}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-avatar i{font-size:40px;color:#5a9e7a}
+
+/* Inventory */
+.inventory-slot{background:#1a2e24;border:2px dashed #2d4a3e;border-radius:10px;padding:10px;transition:all 0.3s;position:relative;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.inventory-slot.filled{border-style:solid;border-color:#3d6b54;background:#15211c}
+.inventory-slot img{width:100%;height:60px;object-fit:cover;border-radius:6px;margin-bottom:6px}
+.inventory-slot .slot-name{font-size:11px;color:#e2e8f0;font-weight:600;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.inventory-slot .slot-qty{font-size:10px;color:#7bc9a0;text-align:center}
+.inventory-slot .slot-actions{position:absolute;top:4px;right:4px;display:none;gap:3px}
+.inventory-slot:hover .slot-actions{display:flex}
+.inventory-slot .slot-actions button{width:22px;height:22px;border-radius:4px;border:none;background:rgba(239,68,68,0.85);color:white;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center}
+.inventory-slot .slot-actions button.edit-btn{background:rgba(59,130,246,0.85)}
+.add-slot-btn{background:#0d1412;border:2px dashed #3d6b54;border-radius:10px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;min-height:100px}
+.add-slot-btn:active{transform:scale(0.95)}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.active{display:flex}
+.modal-content{background:#111a16;border:1px solid #2d4a3e;border-radius:16px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;padding:20px;position:relative}
+.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;color:#5a9e7a;cursor:pointer;font-size:18px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.modal-close:active{background:rgba(45,74,62,0.3)}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a2e24;border:1px solid #3d6b54;color:#e2e8f0;padding:10px 20px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px;z-index:300;opacity:0;transition:all 0.3s ease;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{border-color:#ef4444;color:#fca5a5}
+
+/* Income tabs */
+.income-tab{transition:all 0.3s;cursor:pointer;padding:12px;border-radius:10px;text-align:center;border:2px solid transparent}
+.income-tab.active{transform:scale(1.02);border-color:currentColor;background:rgba(255,255,255,0.05)}
+.income-tab:not(.active){opacity:0.5}
+.class-panel{display:none}
+.class-panel.active{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Comparison table */
+.comparison-row:nth-child(even){background:rgba(45,74,62,0.08)}
+
+/* Desktop responsive */
+@media (min-width: 769px) {
+    .desktop-only{display:block !important}
+    .mobile-only{display:none !important}
+    .mobile-home{display:none !important}
+    .mobile-page{display:none !important}
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .desktop-only{display:none !important}
+    .mobile-only{display:block !important}
+    .mobile-home.active{display:block !important}
+}
+
+/* Desktop nav */
+.desktop-nav{display:flex}
+@media (max-width: 768px){.desktop-nav{display:none}}
+
+/* Grid bg */
+.grid-bg{background-image:linear-gradient(rgba(45,74,62,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(45,74,62,0.08) 1px,transparent 1px);background-size:20px 20px}
+
+/* Glitch */
 .glitch-text{position:relative}
 .glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
-.glitch-text::before{left:2px;text-shadow:-1px 0 #ff6b35;clip:rect(24px,550px,90px,0);animation:glitch-anim 3s infinite linear alternate-reverse}
-.glitch-text::after{left:-2px;text-shadow:-1px 0 #3b82f6;clip:rect(85px,550px,140px,0);animation:glitch-anim 2s infinite linear alternate-reverse}
-@keyframes glitch-anim{0%{clip:rect(10px,9999px,85px,0)}20%{clip:rect(63px,9999px,130px,0)}40%{clip:rect(25px,9999px,145px,0)}60%{clip:rect(10px,9999px,80px,0)}80%{clip:rect(50px,9999px,120px,0)}100%{clip:rect(90px,9999px,100px,0)}}
-.mobile-menu{transform:translateX(-100%);transition:transform 0.3s ease}
-.mobile-menu.open{transform:translateX(0)}
-.income-tab{transition:all 0.3s ease;cursor:pointer}
-.income-tab.active{transform:scale(1.02);box-shadow:0 0 20px currentColor}
-.income-tab:not(.active){opacity:0.6}
-.income-tab:not(.active):hover{opacity:0.85}
-.class-panel{display:none;animation:fadeIn 0.4s ease}
-.class-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.tier-badge{display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
-::-webkit-scrollbar{width:8px}
-::-webkit-scrollbar-track{background:#0a0f0d}
-::-webkit-scrollbar-thumb{background:#2d4a3e;border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:#3d6b54}
-.comparison-row:nth-child(even){background:rgba(45,74,62,0.1)}
-
-/* Profile & Inventory Styles */
-.profile-avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #3d6b54;background:#1a2e24;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease}
-.profile-avatar:hover{border-color:#ff6b35;transform:scale(1.05)}
-.profile-avatar i{font-size:48px;color:#5a9e7a}
-.inventory-slot{background:#1a2e24;border:2px dashed #2d4a3e;border-radius:8px;padding:12px;transition:all 0.3s ease;position:relative}
-.inventory-slot:hover{border-color:#5a9e7a;background:#223a30}
-.inventory-slot.filled{border-style:solid;border-color:#3d6b54;background:#15211c}
-.inventory-slot img{width:100%;height:80px;object-fit:cover;border-radius:4px;margin-bottom:8px}
-.inventory-slot .slot-name{font-size:0.75rem;color:#e2e8f0;font-weight:600;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.inventory-slot .slot-qty{font-size:0.65rem;color:#7bc9a0;text-align:center;margin-top:2px}
-.inventory-slot .slot-actions{position:absolute;top:4px;right:4px;display:none}
-.inventory-slot:hover .slot-actions{display:flex;gap:4px}
-.inventory-slot .slot-actions button{width:24px;height:24px;border-radius:4px;border:none;background:rgba(239,68,68,0.8);color:white;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center}
-.inventory-slot .slot-actions button.edit-btn{background:rgba(59,130,246,0.8)}
-.add-slot-btn{background:#0d1412;border:2px dashed #3d6b54;border-radius:8px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;min-height:120px}
-.add-slot-btn:hover{border-color:#ff6b35;background:#15211c}
-.add-slot-btn i{font-size:24px;color:#5a9e7a;margin-bottom:8px}
-.add-slot-btn span{font-size:0.75rem;color:#5a9e7a}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.active{display:flex}
-.modal-content{background:#111a16;border:2px solid #2d4a3e;border-radius:12px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;position:relative}
-.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;color:#5a9e7a;cursor:pointer;font-size:20px}
-.modal-close:hover{color:#ff6b35}
-.file-input-wrapper{position:relative;overflow:hidden;display:inline-block;width:100%}
-.file-input-wrapper input[type=file]{position:absolute;left:0;top:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.toast{position:fixed;bottom:20px;right:20px;background:#1a2e24;border:1px solid #3d6b54;border-left:4px solid #22c55e;color:#e2e8f0;padding:12px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;z-index:200;transform:translateX(150%);transition:transform 0.3s ease;max-width:350px}
-.toast.show{transform:translateX(0)}
-.toast.error{border-left-color:#ef4444}
+.glitch-text::before{left:1px;text-shadow:-1px 0 #ff6b35;clip:rect(20px,550px,80px,0);animation:glitch-anim 3s infinite linear alternate-reverse}
+.glitch-text::after{left:-1px;text-shadow:-1px 0 #3b82f6;clip:rect(80px,550px,130px,0);animation:glitch-anim 2s infinite linear alternate-reverse}
+@keyframes glitch-anim{0%{clip:rect(10px,9999px,80px,0)}20%{clip:rect(60px,9999px,120px,0)}40%{clip:rect(20px,9999px,140px,0)}60%{clip:rect(10px,9999px,70px,0)}80%{clip:rect(45px,9999px,110px,0)}100%{clip:rect(85px,9999px,95px,0)}}
 </style>
+<base target="_blank">
 </head>
-<body class="font-sans antialiased overflow-x-hidden">
+<body class="font-sans antialiased">
 <div class="scanline"></div>
 
-<div class="bg-tactical-danger/20 border-b border-tactical-danger/30 text-tactical-danger px-4 py-2 text-center font-mono text-sm tracking-wider">
-<i class="fas fa-exclamation-triangle mr-2 animate-pulse"></i>
-WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEVEL: CRITICAL
+<!-- ==================== DESKTOP LAYOUT ==================== -->
+<div class="desktop-only">
+
+<!-- Top Alert -->
+<div class="bg-tactical-danger/20 border-b border-tactical-danger/30 text-tactical-danger px-4 py-2 text-center font-mono text-xs tracking-wider">
+<i class="fas fa-exclamation-triangle mr-2 animate-pulse"></i>WMO ALERT: 80% PROBABILITY SUPER EL NINO JUNE-AUGUST 2026 | THREAT: CRITICAL
 </div>
 
+<!-- Desktop Nav -->
 <nav class="bg-tactical-900/95 backdrop-blur-md border-b border-tactical-700 sticky top-0 z-40">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between h-16 items-center">
 <div class="flex items-center space-x-3">
-<div class="relative"><i class="fas fa-shield-halved text-tactical-400 text-2xl"></i><div class="absolute -top-1 -right-1 w-2 h-2 bg-tactical-danger rounded-full radar-ping"></div></div>
+<div class="relative"><i class="fas fa-shield-halved text-tactical-400 text-2xl"></i><div class="absolute -top-1 -right-1 w-2 h-2 bg-tactical-danger rounded-full animate-pulse"></div></div>
 <div><h1 class="font-mono font-bold text-lg tracking-tight text-white glitch-text" data-text="EL NINO COMMAND">EL NINO COMMAND</h1><p class="text-xs text-tactical-400 font-mono">TACTICAL PREPAREDNESS UNIT</p></div>
 </div>
-<div class="hidden md:flex items-center space-x-1">
-<button onclick="scrollToSection('dashboard')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">DASHBOARD</button>
-<button onclick="scrollToSection('threats')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">THREATS</button>
-<button onclick="scrollToSection('classes')" class="px-4 py-2 rounded text-sm font-mono text-tactical-accent hover:bg-tactical-700 transition-colors"><i class="fas fa-layer-group mr-1"></i>CLASSES</button>
-<button onclick="scrollToSection('checklist')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">CHECKLIST</button>
-<button onclick="scrollToSection('profile')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors"><i class="fas fa-user mr-1"></i>PROFILE</button>
-<button onclick="scrollToSection('inventory')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors"><i class="fas fa-boxes-stacked mr-1"></i>INVENTORY</button>
-<button onclick="scrollToSection('supplies')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">SUPPLIES</button>
-<button onclick="scrollToSection('calculator')" class="px-4 py-2 rounded text-sm font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">CALCULATOR</button>
-<button onclick="scrollToSection('intel')" class="px-4 py-2 rounded text-sm font-mono text-tactical-accent hover:bg-tactical-700 transition-colors">LIVE INTEL</button>
+<div class="desktop-nav items-center space-x-1">
+<button onclick="scrollToSection('dashboard')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">DASHBOARD</button>
+<button onclick="scrollToSection('threats')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">THREATS</button>
+<button onclick="scrollToSection('classes')" class="px-3 py-2 rounded text-xs font-mono text-tactical-accent hover:bg-tactical-700 transition-colors">CLASSES</button>
+<button onclick="scrollToSection('checklist')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">CHECKLIST</button>
+<button onclick="scrollToSection('profile')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">PROFILE</button>
+<button onclick="scrollToSection('inventory')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">INVENTORY</button>
+<button onclick="scrollToSection('supplies')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">SUPPLIES</button>
+<button onclick="scrollToSection('calculator')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">CALC</button>
+<button onclick="scrollToSection('intel')" class="px-3 py-2 rounded text-xs font-mono text-tactical-accent hover:bg-tactical-700 transition-colors">INTEL</button>
+<button onclick="scrollToSection('alerts')" class="px-3 py-2 rounded text-xs font-mono text-tactical-danger hover:bg-tactical-700 transition-colors animate-pulse">ALERTS</button>
 </div>
-<div class="flex items-center space-x-2">
-<button onclick="downloadOffline()" class="hidden md:flex items-center px-3 py-2 rounded text-xs font-mono bg-tactical-700 text-tactical-300 hover:bg-tactical-600 hover:text-white transition-colors border border-tactical-600" title="Download for offline use">
-<i class="fas fa-download mr-1"></i>OFFLINE
-</button>
-<button onclick="toggleMobileMenu()" class="md:hidden text-tactical-300 hover:text-white p-2"><i class="fas fa-bars text-xl"></i></button>
-</div>
+<button onclick="downloadOffline()" class="hidden md:flex items-center px-3 py-2 rounded text-xs font-mono bg-tactical-700 text-tactical-300 hover:bg-tactical-600 transition-colors border border-tactical-600" title="Download for offline"><i class="fas fa-download mr-1"></i>OFFLINE</button>
 </div>
 </div>
 </nav>
 
-<div id="mobileMenu" class="mobile-menu fixed inset-0 bg-tactical-900/98 z-50 md:hidden">
-<div class="p-6">
-<div class="flex justify-between items-center mb-8"><span class="font-mono font-bold text-white">MENU</span><button onclick="toggleMobileMenu()" class="text-tactical-300 hover:text-white"><i class="fas fa-times text-2xl"></i></button></div>
-<div class="space-y-4 font-mono">
-<button onclick="scrollToSection('dashboard');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700">DASHBOARD</button>
-<button onclick="scrollToSection('threats');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700">THREAT ASSESSMENT</button>
-<button onclick="scrollToSection('classes');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-accent/20 text-tactical-accent hover:bg-tactical-accent/30"><i class="fas fa-layer-group mr-2"></i>INCOME CLASSES</button>
-<button onclick="scrollToSection('checklist');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700">SURVIVAL CHECKLIST</button>
-<button onclick="scrollToSection('profile');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700"><i class="fas fa-user mr-2"></i>MY PROFILE</button>
-<button onclick="scrollToSection('inventory');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700"><i class="fas fa-boxes-stacked mr-2"></i>INVENTORY</button>
-<button onclick="scrollToSection('supplies');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700">SUPPLY MATRIX</button>
-<button onclick="scrollToSection('calculator');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-800 text-tactical-300 hover:bg-tactical-700">SUPPLY CALCULATOR</button>
-<button onclick="scrollToSection('intel');toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-accent/20 text-tactical-accent hover:bg-tactical-accent/30">LIVE INTEL FEED</button>
-<div class="pt-4 border-t border-tactical-700">
-<button onclick="downloadOffline();toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded bg-tactical-700 text-tactical-300 hover:bg-tactical-600 border border-tactical-600">
-<i class="fas fa-download mr-2"></i>DOWNLOAD OFFLINE VERSION
-</button>
-</div>
-</div>
-</div>
-</div>
-
-<section class="relative min-h-[60vh] flex items-center justify-center grid-bg overflow-hidden">
+<!-- Desktop Hero -->
+<section class="relative min-h-[55vh] flex items-center justify-center grid-bg overflow-hidden">
 <div class="absolute inset-0 bg-gradient-to-b from-tactical-900/50 via-tactical-900/80 to-tactical-900"></div>
 <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 <div class="inline-flex items-center space-x-2 bg-tactical-danger/10 border border-tactical-danger/30 rounded-full px-4 py-1 mb-6">
@@ -154,21 +221,19 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 <span class="text-tactical-danger font-mono text-xs tracking-wider">OPERATION THERMAL SHIELD // 2026</span>
 </div>
 <h2 class="text-4xl md:text-6xl lg:text-7xl font-black font-mono text-white mb-6 leading-tight">SUPER EL NINO<br><span class="text-tactical-accent">PREPAREDNESS</span></h2>
-<p class="text-lg md:text-xl text-tactical-400 max-w-3xl mx-auto mb-8 font-light">Pacific Ocean temperatures exceeding <span class="text-tactical-warning font-bold">+6C above average</span>. A multi-hazard scenario requiring immediate tactical readiness. <span class="text-white">Prepare before the impacts peak.</span></p>
+<p class="text-lg md:text-xl text-tactical-400 max-w-3xl mx-auto mb-8 font-light">Pacific Ocean temps exceeding <span class="text-tactical-warning font-bold">+6C above average</span>. Multi-hazard scenario requiring immediate readiness.</p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-<button onclick="scrollToSection('classes')" class="bg-tactical-accent hover:bg-orange-600 text-white px-8 py-4 rounded font-mono font-bold tracking-wider transition-all transform hover:scale-105 shadow-lg shadow-orange-500/20"><i class="fas fa-layer-group mr-2"></i>FIND YOUR CLASS</button>
-<button onclick="scrollToSection('calculator')" class="bg-tactical-700 hover:bg-tactical-600 text-white px-8 py-4 rounded font-mono font-bold tracking-wider transition-all border border-tactical-500"><i class="fas fa-calculator mr-2"></i>SUPPLY CALCULATOR</button>
+<button onclick="scrollToSection('classes')" class="bg-tactical-accent hover:bg-orange-600 text-white px-8 py-4 rounded font-mono font-bold tracking-wider transition-all transform hover:scale-105 shadow-lg"><i class="fas fa-layer-group mr-2"></i>FIND YOUR CLASS</button>
+<button onclick="scrollToSection('calculator')" class="bg-tactical-700 hover:bg-tactical-600 text-white px-8 py-4 rounded font-mono font-bold tracking-wider transition-all border border-tactical-500"><i class="fas fa-calculator mr-2"></i>SUPPLY CALC</button>
 </div>
-<div class="mt-6 flex flex-wrap justify-center gap-3">
-<button onclick="downloadOffline()" class="inline-flex items-center px-4 py-2 rounded text-sm font-mono bg-tactical-800 text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors border border-tactical-600">
-<i class="fas fa-download mr-2 text-tactical-accent"></i>Download Offline Version
-</button>
+<div class="mt-4">
+<button onclick="downloadOffline()" class="inline-flex items-center px-4 py-2 rounded text-sm font-mono bg-tactical-800 text-tactical-300 hover:bg-tactical-700 transition-colors border border-tactical-600"><i class="fas fa-download mr-2 text-tactical-accent"></i>Download Offline Version</button>
 </div>
 </div>
 <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-tactical-900 to-transparent"></div>
-<div class="absolute top-20 right-10 text-tactical-600/20 font-mono text-9xl font-black select-none hidden lg:block">2026</div>
 </section>
 
+<!-- Desktop Dashboard -->
 <section id="dashboard" class="py-16 bg-tactical-800 relative">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center space-x-3 mb-8"><i class="fas fa-gauge-high text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">TACTICAL DASHBOARD</h3></div>
@@ -201,6 +266,7 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 </div>
 </section>
 
+<!-- Desktop Threats -->
 <section id="threats" class="py-16 bg-tactical-900">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center space-x-3 mb-8"><i class="fas fa-triangle-exclamation text-tactical-danger text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">MULTI-HAZARD THREAT ASSESSMENT</h3></div>
@@ -269,14 +335,11 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 </div>
 </section>
 
+<!-- Desktop Classes -->
 <section id="classes" class="py-16 bg-tactical-850 grid-bg">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-2">
-<i class="fas fa-layer-group text-tactical-accent text-2xl"></i>
-<h3 class="text-2xl font-mono font-bold text-white">PREPAREDNESS BY INCOME CLASS</h3>
-</div>
-<p class="text-tactical-400 text-sm mb-8 max-w-3xl">Not everyone has the same resources. Your income level determines your tactical approach. Select your classification to see tailored recommendations.</p>
-
+<div class="flex items-center space-x-3 mb-2"><i class="fas fa-layer-group text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">PREPAREDNESS BY INCOME CLASS</h3></div>
+<p class="text-tactical-400 text-sm mb-8 max-w-3xl">Not everyone has the same resources. Select your classification for tailored recommendations.</p>
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
 <div class="income-tab active bg-tactical-800 border-2 border-tactical-budget rounded-lg p-4 text-center" onclick="selectClass('budget')" id="tab-budget">
 <i class="fas fa-piggy-bank text-tactical-budget text-2xl mb-2"></i>
@@ -300,403 +363,107 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 </div>
 </div>
 
-<!-- BUDGET PANEL -->
 <div class="class-panel active" id="panel-budget">
 <div class="bg-tactical-900 border border-tactical-budget/30 rounded-lg overflow-hidden">
 <div class="bg-tactical-budget/10 px-6 py-4 border-b border-tactical-budget/20">
 <div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3">
-<i class="fas fa-piggy-bank text-tactical-budget text-xl"></i>
-<div>
-<h4 class="font-mono font-bold text-tactical-budget text-lg">BUDGET SURVIVOR</h4>
-<p class="text-xs text-tactical-400">Income: &lt;$30,000/year | &lt;P1,700,000/year</p>
+<div class="flex items-center space-x-3"><i class="fas fa-piggy-bank text-tactical-budget text-xl"></i><div><h4 class="font-mono font-bold text-tactical-budget text-lg">BUDGET SURVIVOR</h4><p class="text-xs text-tactical-400">&lt;$30,000/year | &lt;P1.7M/year</p></div></div>
+<span class="tier-badge bg-tactical-budget/20 text-tactical-budget border border-tactical-budget/30"><i class="fas fa-wallet mr-1"></i>$50-150 | P2,900-8,700</span>
 </div>
-</div>
-<span class="tier-badge bg-tactical-budget/20 text-tactical-budget border border-tactical-budget/30">
-<i class="fas fa-wallet mr-1"></i>SETUP: $50-150 | P2,900-8,700
-</span>
-</div>
-<p class="text-sm text-tactical-300 mt-3">Essential survival with minimal resources. DIY solutions, community reliance, and government aid coordination. Focus on what you can do for free or nearly free.</p>
+<p class="text-sm text-tactical-300 mt-3">Essential survival with minimal resources. DIY solutions, community reliance, and government aid coordination.</p>
 </div>
 <div class="p-6">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-budget text-sm mb-3 flex items-center"><i class="fas fa-droplet mr-2"></i>WATER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>2L soda bottles (cleaned & stored)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Rain barrels from discarded drums</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Boiling + cloth filtration method</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Community well mapping</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-budget text-sm mb-3 flex items-center"><i class="fas fa-burger mr-2"></i>FOOD</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Rice & beans bulk (50kg sacks)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Dried fish / ikan bilis storage</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Root crops: kamote, cassava, gabi</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Local foraging guides (free apps)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Gov't relief center pre-registration</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-budget text-sm mb-3 flex items-center"><i class="fas fa-bolt mr-2"></i>POWER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Hand-crank emergency radio</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Candles + waterproof matches</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Car battery inverter (borrowed)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Solar bottle lights (Moser lamp DIY)</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-budget text-sm mb-3 flex items-center"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Sandbags: sack + soil (DIY)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Plastic sheet tarpaulins (sari-sari)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Mosquito nets (DOH free programs)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Raised sleeping platforms</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-budget text-sm mb-3 flex items-center"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Generic pharmacy meds (paracetamol, ORS)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Herbal remedies: lagundi, sambong, oregano</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Barangay health center coordination</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Free vaccination program enrollment</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-budget text-sm mb-3 flex items-center"><i class="fas fa-person-walking mr-2"></i>EVACUATION</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Go-bag from repurposed backpack</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Foot evacuation routes (memorized)</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Barangay assembly point memorization</li>
-<li class="flex items-start"><span class="text-tactical-budget mr-2">></span>Relative network mapping (free stay)</li>
-</ul>
-</div>
-</div>
-<div class="mt-4 bg-tactical-budget/10 border border-tactical-budget/20 rounded-lg p-4">
-<p class="text-sm text-tactical-budget font-mono"><i class="fas fa-lightbulb mr-2"></i>BUDGET TIP: Join barangay disaster preparedness meetings. Many supplies are distributed free during drills. Coordinate with neighbors for bulk purchasing.</p>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>2L soda bottles (cleaned)</li><li>Rain barrels from discarded drums</li><li>Boiling + cloth filtration</li><li>Community well mapping</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Rice & beans bulk (50kg sacks)</li><li>Dried fish / ikan bilis</li><li>Root crops: kamote, cassava</li><li>Gov't relief pre-registration</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Hand-crank emergency radio</li><li>Candles + waterproof matches</li><li>Car battery inverter (borrowed)</li><li>Solar bottle lights (DIY)</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Sandbags: sack + soil (DIY)</li><li>Plastic sheet tarpaulins</li><li>Mosquito nets (DOH free)</li><li>Raised sleeping platforms</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Generic pharmacy meds</li><li>Herbal: lagundi, sambong</li><li>Barangay health center</li><li>Free vaccination programs</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-person-walking mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Go-bag from repurposed backpack</li><li>Foot evacuation routes</li><li>Barangay assembly point</li><li>Relative network mapping</li></ul></div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- CITIZEN PANEL -->
 <div class="class-panel" id="panel-citizen">
 <div class="bg-tactical-900 border border-tactical-citizen/30 rounded-lg overflow-hidden">
 <div class="bg-tactical-citizen/10 px-6 py-4 border-b border-tactical-citizen/20">
 <div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3">
-<i class="fas fa-shield-halved text-tactical-citizen text-xl"></i>
-<div>
-<h4 class="font-mono font-bold text-tactical-citizen text-lg">TACTICAL CITIZEN</h4>
-<p class="text-xs text-tactical-400">Income: $30,000-75,000/year | P1.7M-4.3M/year</p>
+<div class="flex items-center space-x-3"><i class="fas fa-shield-halved text-tactical-citizen text-xl"></i><div><h4 class="font-mono font-bold text-tactical-citizen text-lg">TACTICAL CITIZEN</h4><p class="text-xs text-tactical-400">$30-75k/year | P1.7-4.3M/year</p></div></div>
+<span class="tier-badge bg-tactical-citizen/20 text-tactical-citizen border border-tactical-citizen/30"><i class="fas fa-wallet mr-1"></i>$300-800 | P17,400-46,400</span>
 </div>
-</div>
-<span class="tier-badge bg-tactical-citizen/20 text-tactical-citizen border border-tactical-citizen/30">
-<i class="fas fa-wallet mr-1"></i>SETUP: $300-800 | P17,400-46,400
-</span>
-</div>
-<p class="text-sm text-tactical-300 mt-3">Balanced preparedness with commercial gear. Family-focused with moderate investment in redundancy. The sweet spot for most households.</p>
+<p class="text-sm text-tactical-300 mt-3">Balanced preparedness with commercial gear. Family-focused with moderate investment in redundancy.</p>
 </div>
 <div class="p-6">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-citizen text-sm mb-3 flex items-center"><i class="fas fa-droplet mr-2"></i>WATER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Aqua-Tainer 7-gal containers (4x)</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>LifeStraw Family gravity filter</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Rainwater catchment system (gutter)</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Bleach purification protocol</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-citizen text-sm mb-3 flex items-center"><i class="fas fa-burger mr-2"></i>FOOD</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>30-day canned/dried stock rotation</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Propane camp stove + 4 spare tanks</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Mylar bag + O2 absorber storage</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Sprouting jars for fresh greens</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-citizen text-sm mb-3 flex items-center"><i class="fas fa-bolt mr-2"></i>POWER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>2x 20,000mAh power banks</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>20W solar panel phone charger</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>LED lantern + headlamp set</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Car inverter + spare battery</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-citizen text-sm mb-3 flex items-center"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Commercial sandbags (50-count)</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Portable sump pump</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Window plywood pre-cut & stored</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Fire extinguisher (2x ABC rated)</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-citizen text-sm mb-3 flex items-center"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Adventure Medical Kit 2.0</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>90-day prescription buffer</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Water purification tablets</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>N95 masks (box of 20)</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-citizen text-sm mb-3 flex items-center"><i class="fas fa-car mr-2"></i>EVACUATION</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>72-hour bug-out bags (family set)</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Roof rack cargo box</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Physical maps + offline GPS app</li>
-<li class="flex items-start"><span class="text-tactical-citizen mr-2">></span>Cash stash ($300 small bills)</li>
-</ul>
-</div>
-</div>
-<div class="mt-4 bg-tactical-citizen/10 border border-tactical-citizen/20 rounded-lg p-4">
-<p class="text-sm text-tactical-citizen font-mono"><i class="fas fa-lightbulb mr-2"></i>CITIZEN TIP: Buy gear during off-season sales (post-typhoon clearance). Invest in a good water filter first - it is your highest ROI item.</p>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Aqua-Tainer 7-gal x4</li><li>LifeStraw Family filter</li><li>Rainwater catchment system</li><li>Bleach purification protocol</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>30-day canned/dried stock</li><li>Propane camp stove + 4 tanks</li><li>Mylar bag + O2 absorber</li><li>Sprouting jars for greens</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>2x 20,000mAh power banks</li><li>20W solar panel charger</li><li>LED lantern + headlamp</li><li>Car inverter + spare battery</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Commercial sandbags (50ct)</li><li>Portable sump pump</li><li>Window plywood pre-cut</li><li>Fire extinguisher (2x ABC)</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Adventure Medical Kit 2.0</li><li>90-day prescription buffer</li><li>Water purification tablets</li><li>N95 masks (box of 20)</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-car mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>72-hour bug-out bags</li><li>Roof rack cargo box</li><li>Physical maps + offline GPS</li><li>Cash stash ($300)</li></ul></div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- OPERATOR PANEL -->
 <div class="class-panel" id="panel-operator">
 <div class="bg-tactical-900 border border-tactical-operator/30 rounded-lg overflow-hidden">
 <div class="bg-tactical-operator/10 px-6 py-4 border-b border-tactical-operator/20">
 <div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3">
-<i class="fas fa-user-shield text-tactical-operator text-xl"></i>
-<div>
-<h4 class="font-mono font-bold text-tactical-operator text-lg">OPERATOR CLASS</h4>
-<p class="text-xs text-tactical-400">Income: $75,000-150,000/year | P4.3M-8.7M/year</p>
+<div class="flex items-center space-x-3"><i class="fas fa-user-shield text-tactical-operator text-xl"></i><div><h4 class="font-mono font-bold text-tactical-operator text-lg">OPERATOR CLASS</h4><p class="text-xs text-tactical-400">$75-150k/year | P4.3-8.7M/year</p></div></div>
+<span class="tier-badge bg-tactical-operator/20 text-tactical-operator border border-tactical-operator/30"><i class="fas fa-wallet mr-1"></i>$1,500-5,000 | P87,000-290,000</span>
 </div>
-</div>
-<span class="tier-badge bg-tactical-operator/20 text-tactical-operator border border-tactical-operator/30">
-<i class="fas fa-wallet mr-1"></i>SETUP: $1,500-5,000 | P87,000-290,000
-</span>
-</div>
-<p class="text-sm text-tactical-300 mt-3">Professional-grade redundancy. Off-grid capability, vehicle-based systems, and neighborhood coordination. You are the person others look to when systems fail.</p>
+<p class="text-sm text-tactical-300 mt-3">Professional-grade redundancy. Off-grid capability, vehicle-based systems, and neighborhood coordination.</p>
 </div>
 <div class="p-6">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-operator text-sm mb-3 flex items-center"><i class="fas fa-droplet mr-2"></i>WATER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Berkey gravity filter (Big Berkey)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>500-gal cistern / IBC tote</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>UV sterilizer (SteriPen Ultra)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Well pump + hand pump backup</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-operator text-sm mb-3 flex items-center"><i class="fas fa-burger mr-2"></i>FOOD</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>90-day freeze-dried (Mountain House)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Home canning setup (pressure cooker)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Solar dehydrator (DIY or commercial)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Hunting/fishing gear + licenses</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Heirloom seed vault</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-operator text-sm mb-3 flex items-center"><i class="fas fa-bolt mr-2"></i>POWER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Jackery 1000 + 2x 100W solar panels</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Honda EU2200i inverter generator</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Deep cycle battery bank (2x 100Ah)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Whole-house surge protector</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-operator text-sm mb-3 flex items-center"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Flood barrier system (Quick Dam)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Backup sump + battery system</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Storm shutters (install-ready)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Safe room / reinforced interior room</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-operator text-sm mb-3 flex items-center"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Tactical trauma kit (CAT tourniquet, chest seal)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Antibiotics (fish med equivalent stock)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Dental emergency kit</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Pulse oximeter + BP cuff</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-operator text-sm mb-3 flex items-center"><i class="fas fa-car mr-2"></i>EVACUATION</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>4WD vehicle kit (winch, snorkel, lift)</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Ham radio license + Baofeng UV-5R</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Cache locations mapped & stocked</li>
-<li class="flex items-start"><span class="text-tactical-operator mr-2">></span>Secondary property / family rural land</li>
-</ul>
-</div>
-</div>
-<div class="mt-4 bg-tactical-operator/10 border border-tactical-operator/20 rounded-lg p-4">
-<p class="text-sm text-tactical-operator font-mono"><i class="fas fa-lightbulb mr-2"></i>OPERATOR TIP: Get your amateur radio license NOW. When cell towers fail, you will be the neighborhood comms hub. Also consider a rainwater harvesting system - it pays for itself in 2 years.</p>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Berkey gravity filter</li><li>500-gal cistern / IBC tote</li><li>UV sterilizer (SteriPen)</li><li>Well pump + hand pump backup</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>90-day freeze-dried</li><li>Home canning setup</li><li>Solar dehydrator</li><li>Hunting/fishing gear + licenses</li><li>Heirloom seed vault</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Jackery 1000 + solar panels</li><li>Honda EU2200i generator</li><li>Deep cycle battery bank</li><li>Whole-house surge protector</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Flood barrier system (Quick Dam)</li><li>Backup sump + battery</li><li>Storm shutters</li><li>Safe room / reinforced interior</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Tactical trauma kit (CAT tourniquet)</li><li>Antibiotics stock</li><li>Dental emergency kit</li><li>Pulse oximeter + BP cuff</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-car mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>4WD vehicle kit (winch, snorkel)</li><li>Ham radio license + Baofeng</li><li>Cache locations mapped</li><li>Secondary property / rural land</li></ul></div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- ELITE PANEL -->
 <div class="class-panel" id="panel-elite">
 <div class="bg-tactical-900 border border-tactical-elite/30 rounded-lg overflow-hidden">
 <div class="bg-tactical-elite/10 px-6 py-4 border-b border-tactical-elite/20">
 <div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3">
-<i class="fas fa-crown text-tactical-elite text-xl"></i>
-<div>
-<h4 class="font-mono font-bold text-tactical-elite text-lg">COMMAND ELITE</h4>
-<p class="text-xs text-tactical-400">Income: &gt;$150,000/year | &gt;P8,700,000/year</p>
+<div class="flex items-center space-x-3"><i class="fas fa-crown text-tactical-elite text-xl"></i><div><h4 class="font-mono font-bold text-tactical-elite text-lg">COMMAND ELITE</h4><p class="text-xs text-tactical-400">&gt;$150,000/year | &gt;P8.7M/year</p></div></div>
+<span class="tier-badge bg-tactical-elite/20 text-tactical-elite border border-tactical-elite/30"><i class="fas fa-wallet mr-1"></i>$10,000+ | P580,000+</span>
 </div>
-</div>
-<span class="tier-badge bg-tactical-elite/20 text-tactical-elite border border-tactical-elite/30">
-<i class="fas fa-wallet mr-1"></i>SETUP: $10,000+ | P580,000+
-</span>
-</div>
-<p class="text-sm text-tactical-300 mt-3">Full-spectrum resilience. Property hardening, professional consulting, and long-term autonomous operation. You are building a fortress, not just surviving.</p>
+<p class="text-sm text-tactical-300 mt-3">Full-spectrum resilience. Property hardening, professional consulting, and long-term autonomous operation.</p>
 </div>
 <div class="p-6">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-elite text-sm mb-3 flex items-center"><i class="fas fa-droplet mr-2"></i>WATER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Whole-house rainwater harvesting</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Reverse osmosis + UV + charcoal triple</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Borehole with solar pump</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Swimming pool conversion kit</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-elite text-sm mb-3 flex items-center"><i class="fas fa-burger mr-2"></i>FOOD</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>1-year+ long-term storage (professional)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Aquaponics / hydroponics system</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Livestock: chickens, goats, tilapia</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Solar freezer (ice production)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Professional nutritionist planning</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-elite text-sm mb-3 flex items-center"><i class="fas fa-bolt mr-2"></i>POWER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Tesla Powerwall + 10kW solar array</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Diesel generator (20kW) + 500gal tank</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Automatic transfer switch</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Faraday cage for critical electronics</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-elite text-sm mb-3 flex items-center"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Architectural flood-proofing (raise, seal)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Underground storm shelter (FEMA rated)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Fire suppression system (mist + foam)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Perimeter security (cameras, sensors, drones)</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-elite text-sm mb-3 flex items-center"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Telemedicine subscription (24/7)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Emergency dental kit (professional grade)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>AED (automated defibrillator)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Yearly physical + all vaccine boosters</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>EMT course certification</li>
-</ul>
-</div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700">
-<h5 class="font-mono text-tactical-elite text-sm mb-3 flex items-center"><i class="fas fa-car mr-2"></i>EVACUATION</h5>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Secondary property (different climate zone)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Private vehicle fleet (all prepared)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Air evacuation retainer (helicopter)</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Private security consultation</li>
-<li class="flex items-start"><span class="text-tactical-elite mr-2">></span>Offshore asset protection structure</li>
-</ul>
-</div>
-</div>
-<div class="mt-4 bg-tactical-elite/10 border border-tactical-elite/20 rounded-lg p-4">
-<p class="text-sm text-tactical-elite font-mono"><i class="fas fa-lightbulb mr-2"></i>ELITE TIP: Hire a professional preparedness consultant. The money you spend on expert design saves 3x in mistakes. Consider your property as a life-support system, not just a house.</p>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Whole-house rainwater harvesting</li><li>RO + UV + charcoal triple</li><li>Borehole with solar pump</li><li>Swimming pool conversion kit</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>1-year+ long-term storage</li><li>Aquaponics / hydroponics</li><li>Livestock: chickens, goats</li><li>Solar freezer</li><li>Professional nutritionist</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Tesla Powerwall + 10kW solar</li><li>Diesel generator (20kW)</li><li>Automatic transfer switch</li><li>Faraday cage</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Architectural flood-proofing</li><li>Underground storm shelter</li><li>Fire suppression system</li><li>Perimeter security + drones</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Telemedicine subscription</li><li>Emergency dental kit</li><li>AED (defibrillator)</li><li>Yearly physical + boosters</li><li>EMT certification</li></ul></div>
+<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-car mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Secondary property (diff climate)</li><li>Private vehicle fleet prepared</li><li>Air evacuation retainer</li><li>Private security consultation</li><li>Offshore asset protection</li></ul></div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- COMPARISON TABLE -->
 <div class="mt-12">
-<h4 class="font-mono font-bold text-white text-lg mb-4 flex items-center"><i class="fas fa-table-columns mr-2 text-tactical-400"></i>CLASS COMPARISON MATRIX</h4>
+<h4 class="font-mono font-bold text-white text-lg mb-4"><i class="fas fa-table-columns mr-2 text-tactical-400"></i>CLASS COMPARISON MATRIX</h4>
 <div class="bg-tactical-900 border border-tactical-700 rounded-lg overflow-x-auto">
 <table class="w-full text-sm">
-<thead>
-<tr class="bg-tactical-800 border-b border-tactical-700">
-<th class="text-left p-4 font-mono text-tactical-400">CATEGORY</th>
-<th class="text-left p-4 font-mono text-tactical-budget">BUDGET</th>
-<th class="text-left p-4 font-mono text-tactical-citizen">CITIZEN</th>
-<th class="text-left p-4 font-mono text-tactical-operator">OPERATOR</th>
-<th class="text-left p-4 font-mono text-tactical-elite">ELITE</th>
-</tr>
-</thead>
+<thead><tr class="bg-tactical-800 border-b border-tactical-700"><th class="text-left p-4 font-mono text-tactical-400">CATEGORY</th><th class="text-left p-4 font-mono text-tactical-budget">BUDGET</th><th class="text-left p-4 font-mono text-tactical-citizen">CITIZEN</th><th class="text-left p-4 font-mono text-tactical-operator">OPERATOR</th><th class="text-left p-4 font-mono text-tactical-elite">ELITE</th></tr></thead>
 <tbody>
-<tr class="comparison-row border-b border-tactical-800">
-<td class="p-4 font-mono text-tactical-300">Water Storage</td>
-<td class="p-4 text-tactical-400">2L bottles / drums</td>
-<td class="p-4 text-tactical-400">7-gal containers x4</td>
-<td class="p-4 text-tactical-400">500-gal cistern</td>
-<td class="p-4 text-tactical-400">Whole-house + borehole</td>
-</tr>
-<tr class="comparison-row border-b border-tactical-800">
-<td class="p-4 font-mono text-tactical-300">Food Duration</td>
-<td class="p-4 text-tactical-400">7-14 days</td>
-<td class="p-4 text-tactical-400">30 days</td>
-<td class="p-4 text-tactical-400">90 days</td>
-<td class="p-4 text-tactical-400">1+ year</td>
-</tr>
-<tr class="comparison-row border-b border-tactical-800">
-<td class="p-4 font-mono text-tactical-300">Power Backup</td>
-<td class="p-4 text-tactical-400">Candles / crank</td>
-<td class="p-4 text-tactical-400">Power banks + solar</td>
-<td class="p-4 text-tactical-400">Generator + solar</td>
-<td class="p-4 text-tactical-400">Powerwall + diesel</td>
-</tr>
-<tr class="comparison-row border-b border-tactical-800">
-<td class="p-4 font-mono text-tactical-300">Medical</td>
-<td class="p-4 text-tactical-400">Generic / herbal</td>
-<td class="p-4 text-tactical-400">First aid kit</td>
-<td class="p-4 text-tactical-400">Trauma kit + meds</td>
-<td class="p-4 text-tactical-400">Telemedicine + AED</td>
-</tr>
-<tr class="comparison-row border-b border-tactical-800">
-<td class="p-4 font-mono text-tactical-300">Comms</td>
-<td class="p-4 text-tactical-400">Word of mouth</td>
-<td class="p-4 text-tactical-400">Phone + radio</td>
-<td class="p-4 text-tactical-400">Ham radio license</td>
-<td class="p-4 text-tactical-400">Satellite + mesh</td>
-</tr>
-<tr class="comparison-row border-b border-tactical-800">
-<td class="p-4 font-mono text-tactical-300">Evacuation</td>
-<td class="p-4 text-tactical-400">Foot / bus</td>
-<td class="p-4 text-tactical-400">Family vehicle</td>
-<td class="p-4 text-tactical-400">4WD + cache</td>
-<td class="p-4 text-tactical-400">Air + multiple properties</td>
-</tr>
-<tr class="comparison-row">
-<td class="p-4 font-mono text-tactical-300">Setup Cost</td>
-<td class="p-4 text-tactical-budget font-bold">$50-150</td>
-<td class="p-4 text-tactical-citizen font-bold">$300-800</td>
-<td class="p-4 text-tactical-operator font-bold">$1,500-5,000</td>
-<td class="p-4 text-tactical-elite font-bold">$10,000+</td>
-</tr>
+<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Water Storage</td><td class="p-4 text-tactical-400">2L bottles / drums</td><td class="p-4 text-tactical-400">7-gal containers x4</td><td class="p-4 text-tactical-400">500-gal cistern</td><td class="p-4 text-tactical-400">Whole-house + borehole</td></tr>
+<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Food Duration</td><td class="p-4 text-tactical-400">7-14 days</td><td class="p-4 text-tactical-400">30 days</td><td class="p-4 text-tactical-400">90 days</td><td class="p-4 text-tactical-400">1+ year</td></tr>
+<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Power Backup</td><td class="p-4 text-tactical-400">Candles / crank</td><td class="p-4 text-tactical-400">Power banks + solar</td><td class="p-4 text-tactical-400">Generator + solar</td><td class="p-4 text-tactical-400">Powerwall + diesel</td></tr>
+<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Medical</td><td class="p-4 text-tactical-400">Generic / herbal</td><td class="p-4 text-tactical-400">First aid kit</td><td class="p-4 text-tactical-400">Trauma kit + meds</td><td class="p-4 text-tactical-400">Telemedicine + AED</td></tr>
+<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Comms</td><td class="p-4 text-tactical-400">Word of mouth</td><td class="p-4 text-tactical-400">Phone + radio</td><td class="p-4 text-tactical-400">Ham radio license</td><td class="p-4 text-tactical-400">Satellite + mesh</td></tr>
+<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Evacuation</td><td class="p-4 text-tactical-400">Foot / bus</td><td class="p-4 text-tactical-400">Family vehicle</td><td class="p-4 text-tactical-400">4WD + cache</td><td class="p-4 text-tactical-400">Air + multiple properties</td></tr>
+<tr class="comparison-row"><td class="p-4 font-mono text-tactical-300">Setup Cost</td><td class="p-4 text-tactical-budget font-bold">$50-150</td><td class="p-4 text-tactical-citizen font-bold">$300-800</td><td class="p-4 text-tactical-operator font-bold">$1,500-5,000</td><td class="p-4 text-tactical-elite font-bold">$10,000+</td></tr>
 </tbody>
 </table>
 </div>
@@ -704,83 +471,97 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 </div>
 </section>
 
-<!-- PROFILE SECTION -->
+<!-- Desktop Checklist -->
+<section id="checklist" class="py-16 bg-tactical-800 grid-bg">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-3"><i class="fas fa-list-check text-tactical-400 text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">TACTICAL SURVIVAL CHECKLIST</h3></div>
+<div class="text-right"><p class="text-2xl font-mono font-bold text-tactical-400" id="checklistPercent">0%</p><p class="text-xs text-tactical-500">COMPLETION RATE</p></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
+<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER & FOOD SECURITY</h4>
+<div class="space-y-2" id="waterFoodChecks">
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>1 gallon water per person per day (min 14 days)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Water purification tablets/filters (LifeStraw/Berkey)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Rainwater harvesting barrels (sealed, mosquito-proof)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>30+ day non-perishable food supply (canned, dried, MREs)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Manual can opener & portable camp stove with fuel</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Electrolyte packets & dehydration salts</span></label>
+</div>
+</div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
+<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-bolt mr-2 text-yellow-400"></i>POWER & COMMS</h4>
+<div class="space-y-2" id="powerCommsChecks">
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Portable generator (gas/propane) + stored fuel</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Solar panels + solar charger/power station</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Battery-powered/hand-crank NOAA weather radio</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Power banks + extra batteries (AA, AAA, lithium)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Two-way radios (walkie-talkies) for local mesh</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Faraday bag for critical electronics</span></label>
+</div>
+</div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
+<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-house-crack mr-2 text-orange-400"></i>HOME FORTIFICATION</h4>
+<div class="space-y-2" id="homeChecks">
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Sandbags (50+), plastic sheeting, tarps, duct tape</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Sump pump + backup battery pump</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Gutter guards cleared, roof flashing inspected</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Waterproof document safe + cloud backups</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Fire-resistant landscaping / defensible space</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Boards/shutters for window reinforcement</span></label>
+</div>
+</div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
+<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-kit-medical mr-2 text-red-400"></i>MEDICAL & HYGIENE</h4>
+<div class="space-y-2" id="medicalChecks">
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Comprehensive first aid kit + trauma supplies</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>90-day prescription medication supply</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>N95 masks, water purification tabs, ORS packets</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Mosquito nets, repellent, antimalarials (tropics)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Hygiene: wipes, sanitizer, soap, feminine products</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Portable toilet / waste bags with treatment</span></label>
+</div>
+</div>
+</div>
+<div class="mt-6 bg-tactical-900 border border-tactical-700 rounded-lg p-6">
+<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-car mr-2 text-gray-400"></i>VEHICLE & EVACUATION</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2" id="vehicleChecks">
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Bug-out bag (72hr kit) per family member</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Vehicle: full tank + 20gal spare fuel</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Physical maps + marked evacuation routes</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Emergency whistle, signal mirror, flare gun</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Cash stash ($500+ small bills)</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Firearms/self-defense (if legally permitted)</span></label>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Desktop Profile -->
 <section id="profile" class="py-16 bg-tactical-900">
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8">
-<i class="fas fa-user text-tactical-accent text-2xl"></i>
-<h3 class="text-2xl font-mono font-bold text-white">OPERATOR PROFILE</h3>
-</div>
-
+<div class="flex items-center space-x-3 mb-8"><i class="fas fa-user text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">OPERATOR PROFILE</h3></div>
 <div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 md:p-8">
 <div class="flex flex-col md:flex-row gap-8 items-start">
-<!-- Avatar Section -->
 <div class="flex flex-col items-center space-y-4">
-<div class="profile-avatar" id="profileAvatar" onclick="openAvatarModal()">
-<img id="avatarImg" src="" alt="Profile" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%">
-<i class="fas fa-user" id="avatarIcon"></i>
+<div class="profile-avatar" id="profileAvatar" onclick="openAvatarModal()" style="width:120px;height:120px"><img id="avatarImg" src="" alt="" style="display:none"><i class="fas fa-user" id="avatarIcon"></i></div>
+<p class="text-xs text-tactical-400 font-mono text-center">Tap to upload photo</p>
+<button onclick="openAvatarModal()" class="px-4 py-2 rounded bg-tactical-700 text-tactical-300 text-xs font-mono hover:bg-tactical-600"><i class="fas fa-camera mr-1"></i>CHANGE PHOTO</button>
 </div>
-<p class="text-xs text-tactical-400 font-mono text-center">Tap to upload photo<br>(Camera or Gallery)</p>
-<button onclick="openAvatarModal()" class="px-4 py-2 rounded bg-tactical-700 text-tactical-300 text-xs font-mono hover:bg-tactical-600 transition-colors">
-<i class="fas fa-camera mr-1"></i>CHANGE PHOTO
-</button>
-</div>
-
-<!-- Profile Form -->
 <div class="flex-1 w-full">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">CALLSIGN / NAME</label>
-<input type="text" id="profileName" placeholder="Enter callsign..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()">
+<div><label class="block text-xs font-mono text-tactical-400 mb-2">CALLSIGN / NAME</label><input type="text" id="profileName" placeholder="Enter callsign..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
+<div><label class="block text-xs font-mono text-tactical-400 mb-2">INCOME CLASS</label><select id="profileClass" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"><option value="">Select Class...</option><option value="budget">Budget Survivor</option><option value="citizen">Tactical Citizen</option><option value="operator">Operator Class</option><option value="elite">Command Elite</option></select></div>
+<div><label class="block text-xs font-mono text-tactical-400 mb-2">HOUSEHOLD SIZE</label><input type="number" id="profileHousehold" min="1" max="20" value="1" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
+<div><label class="block text-xs font-mono text-tactical-400 mb-2">LOCATION / REGION</label><input type="text" id="profileLocation" placeholder="e.g. Metro Manila, Cebu..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
+<div><label class="block text-xs font-mono text-tactical-400 mb-2">BLOOD TYPE</label><select id="profileBlood" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"><option value="">Unknown</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="AB+">AB+</option><option value="AB-">AB-</option><option value="O+">O+</option><option value="O-">O-</option></select></div>
+<div><label class="block text-xs font-mono text-tactical-400 mb-2">EMERGENCY CONTACT</label><input type="text" id="profileEmergency" placeholder="Name + Phone..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
 </div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">INCOME CLASS</label>
-<select id="profileClass" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()">
-<option value="">Select Class...</option>
-<option value="budget">Budget Survivor</option>
-<option value="citizen">Tactical Citizen</option>
-<option value="operator">Operator Class</option>
-<option value="elite">Command Elite</option>
-</select>
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">HOUSEHOLD SIZE</label>
-<input type="number" id="profileHousehold" min="1" max="20" value="1" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()">
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">LOCATION / REGION</label>
-<input type="text" id="profileLocation" placeholder="e.g. Metro Manila, Cebu..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()">
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">BLOOD TYPE</label>
-<select id="profileBlood" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()">
-<option value="">Unknown</option>
-<option value="A+">A+</option>
-<option value="A-">A-</option>
-<option value="B+">B+</option>
-<option value="B-">B-</option>
-<option value="AB+">AB+</option>
-<option value="AB-">AB-</option>
-<option value="O+">O+</option>
-<option value="O-">O-</option>
-</select>
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">EMERGENCY CONTACT</label>
-<input type="text" id="profileEmergency" placeholder="Name + Phone..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()">
-</div>
-</div>
-<div class="mb-4">
-<label class="block text-xs font-mono text-tactical-400 mb-2">SPECIAL SKILLS / NOTES</label>
-<textarea id="profileNotes" rows="3" placeholder="Medical training, construction skills, ham radio license, etc..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none resize-none" onchange="saveProfile()"></textarea>
-</div>
+<div class="mb-4"><label class="block text-xs font-mono text-tactical-400 mb-2">SPECIAL SKILLS / NOTES</label><textarea id="profileNotes" rows="3" placeholder="Medical training, construction skills, ham radio license..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none resize-none" onchange="saveProfile()"></textarea></div>
 <div class="flex items-center justify-between">
-<div class="text-xs text-tactical-500 font-mono">
-<i class="fas fa-database mr-1"></i>Stored locally on this device
-</div>
-<button onclick="clearProfile()" class="px-4 py-2 rounded bg-tactical-danger/20 text-tactical-danger text-xs font-mono hover:bg-tactical-danger/30 transition-colors border border-tactical-danger/30">
-<i class="fas fa-trash mr-1"></i>CLEAR PROFILE
-</button>
+<div class="text-xs text-tactical-500 font-mono"><i class="fas fa-database mr-1"></i>Stored locally on this device</div>
+<button onclick="clearProfile()" class="px-4 py-2 rounded bg-tactical-danger/20 text-tactical-danger text-xs font-mono hover:bg-tactical-danger/30 border border-tactical-danger/30"><i class="fas fa-trash mr-1"></i>CLEAR PROFILE</button>
 </div>
 </div>
 </div>
@@ -788,53 +569,17 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 </div>
 </section>
 
-<!-- Avatar Upload Modal -->
-<div class="modal-overlay" id="avatarModal">
-<div class="modal-content">
-<button class="modal-close" onclick="closeAvatarModal()"><i class="fas fa-times"></i></button>
-<h4 class="font-mono font-bold text-white text-lg mb-4">UPLOAD PROFILE PHOTO</h4>
-<p class="text-sm text-tactical-400 mb-6">Select a photo from your device. The image will be stored locally and never uploaded to any server.</p>
-
-<div class="space-y-4">
-<div class="file-input-wrapper">
-<button class="w-full py-4 rounded bg-tactical-700 text-tactical-300 font-mono text-sm hover:bg-tactical-600 transition-colors border border-tactical-600 border-dashed">
-<i class="fas fa-camera mr-2"></i>TAKE PHOTO (Camera)
-</button>
-<input type="file" accept="image/*" capture="camera" onchange="handleAvatarUpload(event)">
-</div>
-<div class="file-input-wrapper">
-<button class="w-full py-4 rounded bg-tactical-700 text-tactical-300 font-mono text-sm hover:bg-tactical-600 transition-colors border border-tactical-600 border-dashed">
-<i class="fas fa-images mr-2"></i>CHOOSE FROM GALLERY
-</button>
-<input type="file" accept="image/*" onchange="handleAvatarUpload(event)">
-</div>
-</div>
-
-<div class="mt-4 p-3 bg-tactical-800/50 rounded border border-tactical-700">
-<p class="text-xs text-tactical-400"><i class="fas fa-shield-halved mr-1 text-tactical-500"></i>Privacy: Images are stored using base64 encoding in your browser's localStorage. No data leaves your device.</p>
-</div>
-</div>
-</div>
-
-<!-- INVENTORY SECTION -->
+<!-- Desktop Inventory -->
 <section id="inventory" class="py-16 bg-tactical-850 grid-bg">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center justify-between mb-8">
-<div class="flex items-center space-x-3">
-<i class="fas fa-boxes-stacked text-tactical-accent text-2xl"></i>
-<h3 class="text-2xl font-mono font-bold text-white">TACTICAL INVENTORY</h3>
-</div>
+<div class="flex items-center space-x-3"><i class="fas fa-boxes-stacked text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">TACTICAL INVENTORY</h3></div>
 <div class="flex items-center space-x-3">
 <span class="text-sm font-mono text-tactical-400" id="inventoryCount">0 items</span>
-<button onclick="exportInventory()" class="px-3 py-2 rounded bg-tactical-700 text-tactical-300 text-xs font-mono hover:bg-tactical-600 transition-colors border border-tactical-600">
-<i class="fas fa-file-export mr-1"></i>EXPORT
-</button>
-<button onclick="clearInventory()" class="px-3 py-2 rounded bg-tactical-danger/20 text-tactical-danger text-xs font-mono hover:bg-tactical-danger/30 transition-colors border border-tactical-danger/30">
-<i class="fas fa-trash mr-1"></i>CLEAR ALL
-</button>
+<button onclick="exportInventory()" class="px-3 py-2 rounded bg-tactical-700 text-tactical-300 text-xs font-mono hover:bg-tactical-600 border border-tactical-600"><i class="fas fa-file-export mr-1"></i>EXPORT</button>
+<button onclick="clearInventory()" class="px-3 py-2 rounded bg-tactical-danger/20 text-tactical-danger text-xs font-mono hover:bg-tactical-danger/30 border border-tactical-danger/30"><i class="fas fa-trash mr-1"></i>CLEAR ALL</button>
 </div>
 </div>
-
 <div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
 <div class="mb-6 flex flex-wrap gap-2">
 <button onclick="filterInventory('all')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-accent text-white" data-filter="all">ALL</button>
@@ -846,154 +591,15 @@ WMO ALERT: 80% PROBABILITY OF SUPER EL NIÑO EVENT JUNE-AUGUST 2026 | THREAT LEV
 <button onclick="filterInventory('tools')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="tools">TOOLS</button>
 <button onclick="filterInventory('other')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="other">OTHER</button>
 </div>
-
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="inventoryGrid">
-<!-- Inventory slots rendered by JS -->
-</div>
-
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="inventoryGrid"></div>
 <div class="mt-6 flex justify-center">
-<button onclick="openAddSlotModal()" class="add-slot-btn w-full md:w-auto md:min-w-[160px]">
-<i class="fas fa-plus"></i>
-<span>ADD NEW ITEM</span>
-</button>
+<button onclick="openAddSlotModal()" class="add-slot-btn w-full md:w-auto md:min-w-[160px]" style="min-height:120px"><i class="fas fa-plus text-xl mb-2 text-tactical-500"></i><span class="text-tactical-500 text-sm">ADD NEW ITEM</span></button>
 </div>
 </div>
 </div>
 </section>
 
-<!-- Add/Edit Slot Modal -->
-<div class="modal-overlay" id="slotModal">
-<div class="modal-content">
-<button class="modal-close" onclick="closeSlotModal()"><i class="fas fa-times"></i></button>
-<h4 class="font-mono font-bold text-white text-lg mb-1" id="slotModalTitle">ADD INVENTORY ITEM</h4>
-<p class="text-xs text-tactical-400 mb-4 font-mono">Item #<span id="slotModalId">NEW</span></p>
-
-<div class="space-y-4">
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">ITEM NAME *</label>
-<input type="text" id="slotName" placeholder="e.g. LifeStraw Filter" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none">
-</div>
-<div class="grid grid-cols-2 gap-4">
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">CATEGORY</label>
-<select id="slotCategory" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none">
-<option value="water">Water</option>
-<option value="food">Food</option>
-<option value="power">Power</option>
-<option value="medical">Medical</option>
-<option value="shelter">Shelter</option>
-<option value="tools">Tools</option>
-<option value="other">Other</option>
-</select>
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">QUANTITY</label>
-<input type="number" id="slotQty" min="1" value="1" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none">
-</div>
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">ITEM PHOTO (Optional)</label>
-<div class="file-input-wrapper">
-<button class="w-full py-3 rounded bg-tactical-800 text-tactical-400 font-mono text-xs hover:bg-tactical-700 transition-colors border border-tactical-600 border-dashed">
-<i class="fas fa-camera mr-1"></i>TAKE PHOTO / CHOOSE IMAGE
-</button>
-<input type="file" id="slotImageInput" accept="image/*" onchange="handleSlotImage(event)">
-</div>
-<div id="slotImagePreview" class="mt-2 hidden">
-<img src="" alt="Preview" class="w-full h-32 object-cover rounded border border-tactical-600">
-<button onclick="clearSlotImage()" class="mt-1 text-xs text-tactical-danger font-mono"><i class="fas fa-times mr-1"></i>Remove image</button>
-</div>
-</div>
-<div>
-<label class="block text-xs font-mono text-tactical-400 mb-2">NOTES</label>
-<textarea id="slotNotes" rows="2" placeholder="Expiry date, location stored, condition..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none resize-none"></textarea>
-</div>
-</div>
-
-<div class="flex gap-3 mt-6">
-<button onclick="saveSlot()" class="flex-1 py-3 rounded bg-tactical-accent text-white font-mono font-bold text-sm hover:bg-orange-600 transition-colors">
-<i class="fas fa-save mr-1"></i>SAVE ITEM
-</button>
-<button onclick="closeSlotModal()" class="px-4 py-3 rounded bg-tactical-800 text-tactical-400 font-mono text-sm hover:bg-tactical-700 transition-colors border border-tactical-700">
-CANCEL
-</button>
-</div>
-</div>
-</div>
-
-<section id="checklist" class="py-16 bg-tactical-800 grid-bg">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between mb-8">
-<div class="flex items-center space-x-3">
-<i class="fas fa-list-check text-tactical-400 text-2xl"></i>
-<h3 class="text-2xl font-mono font-bold text-white">TACTICAL SURVIVAL CHECKLIST</h3>
-</div>
-<div class="text-right">
-<p class="text-2xl font-mono font-bold text-tactical-400" id="checklistPercent">0%</p>
-<p class="text-xs text-tactical-500">COMPLETION RATE</p>
-</div>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono flex items-center"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER & FOOD SECURITY</h4>
-<div class="space-y-2" id="waterFoodChecks">
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">1 gallon water per person per day (min 14 days)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Water purification tablets/filters (LifeStraw/Berkey)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Rainwater harvesting barrels (sealed, mosquito-proof)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">30+ day non-perishable food supply (canned, dried, MREs)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Manual can opener & portable camp stove with fuel</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Electrolyte packets & dehydration salts</span></label>
-</div>
-</div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono flex items-center"><i class="fas fa-bolt mr-2 text-yellow-400"></i>POWER & COMMS</h4>
-<div class="space-y-2" id="powerCommsChecks">
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Portable generator (gas/propane) + stored fuel</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Solar panels + solar charger/power station</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Battery-powered/hand-crank NOAA weather radio</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Power banks + extra batteries (AA, AAA, lithium)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Two-way radios (walkie-talkies) for local mesh</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Faraday bag for critical electronics</span></label>
-</div>
-</div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono flex items-center"><i class="fas fa-house-crack mr-2 text-orange-400"></i>HOME FORTIFICATION</h4>
-<div class="space-y-2" id="homeChecks">
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Sandbags (50+), plastic sheeting, tarps, duct tape</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Sump pump + backup battery pump</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Gutter guards cleared, roof flashing inspected</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Waterproof document safe + cloud backups</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Fire-resistant landscaping / defensible space</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Boards/shutters for window reinforcement</span></label>
-</div>
-</div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono flex items-center"><i class="fas fa-kit-medical mr-2 text-red-400"></i>MEDICAL & HYGIENE</h4>
-<div class="space-y-2" id="medicalChecks">
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Comprehensive first aid kit + trauma supplies</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">90-day prescription medication supply</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">N95 masks, water purification tabs, ORS packets</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Mosquito nets, repellent, antimalarials (tropics)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Hygiene: wipes, sanitizer, soap, feminine products</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Portable toilet / waste bags with treatment</span></label>
-</div>
-</div>
-</div>
-<div class="mt-6 bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono flex items-center"><i class="fas fa-car mr-2 text-gray-400"></i>VEHICLE & EVACUATION</h4>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2" id="vehicleChecks">
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Bug-out bag (72hr kit) per family member</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Vehicle: full tank + 20gal spare fuel</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Physical maps + marked evacuation routes</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Emergency whistle, signal mirror, flare gun</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Cash stash ($500+ small bills)</span></label>
-<label class="check-item flex items-center p-3 rounded cursor-pointer hover:bg-tactical-800 border border-transparent"><input type="checkbox" class="w-5 h-5 rounded border-tactical-600 bg-tactical-800 text-tactical-500 focus:ring-tactical-500 mr-3" onchange="updateChecklist()"><span class="text-sm">Firearms/self-defense (if legally permitted)</span></label>
-</div>
-</div>
-</div>
-</section>
-
+<!-- Desktop Calculator -->
 <section id="calculator" class="py-16 bg-tactical-900">
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center space-x-3 mb-8"><i class="fas fa-calculator text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">SUPPLY REQUIREMENTS CALCULATOR</h3></div>
@@ -1004,645 +610,114 @@ CANCEL
 <div><label class="block text-sm font-mono text-tactical-400 mb-2">DURATION (DAYS)</label><input type="number" id="days" value="30" min="1" max="365" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono focus:border-tactical-accent focus:outline-none" onchange="calculateSupplies()"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700">
-<div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER</span><span class="text-2xl font-black text-white font-mono" id="waterTotal">0 gal</span></div>
-<p class="text-xs text-tactical-500">1 gallon per person per day minimum</p>
-<div class="mt-3 h-2 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-blue-500 w-full"></div></div>
+<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER</span><span class="text-2xl font-black text-white font-mono" id="waterTotal">0 gal</span></div><p class="text-xs text-tactical-500">1 gallon per person per day</p></div>
+<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-burger mr-2 text-orange-400"></i>FOOD</span><span class="text-2xl font-black text-white font-mono" id="foodTotal">0 cal</span></div><p class="text-xs text-tactical-500">2,000 cal/adult, 1,400 cal/child</p></div>
+<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-pills mr-2 text-red-400"></i>MEDICAL KITS</span><span class="text-2xl font-black text-white font-mono" id="medTotal">0</span></div><p class="text-xs text-tactical-500">1 kit per 4 people</p></div>
+<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-battery-full mr-2 text-yellow-400"></i>BATTERY SETS</span><span class="text-2xl font-black text-white font-mono" id="batteryTotal">0</span></div><p class="text-xs text-tactical-500">1 set per person per 2 weeks</p></div>
 </div>
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700">
-<div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-burger mr-2 text-orange-400"></i>FOOD (CALORIES)</span><span class="text-2xl font-black text-white font-mono" id="foodTotal">0 cal</span></div>
-<p class="text-xs text-tactical-500">2,000 cal/adult, 1,400 cal/child per day</p>
-<div class="mt-3 h-2 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-orange-500 w-full"></div></div>
-</div>
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700">
-<div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-pills mr-2 text-red-400"></i>MEDICAL KITS</span><span class="text-2xl font-black text-white font-mono" id="medTotal">0</span></div>
-<p class="text-xs text-tactical-500">1 comprehensive kit per 4 people</p>
-<div class="mt-3 h-2 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-red-500 w-full"></div></div>
-</div>
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700">
-<div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-battery-full mr-2 text-yellow-400"></i>BATTERY SETS</span><span class="text-2xl font-black text-white font-mono" id="batteryTotal">0</span></div>
-<p class="text-xs text-tactical-500">1 set per person per 2 weeks</p>
-<div class="mt-3 h-2 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-yellow-500 w-full"></div></div>
-</div>
-</div>
-<div class="mt-6 bg-tactical-accent/10 border border-tactical-accent/30 rounded-lg p-4">
-<p class="text-sm text-tactical-accent font-mono"><i class="fas fa-triangle-exclamation mr-2"></i>RECOMMENDATION: Add 25% buffer for extended scenarios. Store water in multiple containers. Rotate food stock every 6 months.</p>
-</div>
+<div class="mt-6 bg-tactical-accent/10 border border-tactical-accent/30 rounded-lg p-4"><p class="text-sm text-tactical-accent font-mono"><i class="fas fa-triangle-exclamation mr-2"></i>Add 25% buffer. Rotate food stock every 6 months.</p></div>
 </div>
 </div>
 </section>
 
+<!-- Desktop Supplies -->
 <section id="supplies" class="py-16 bg-tactical-800 grid-bg">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center space-x-3 mb-8"><i class="fas fa-boxes-stacked text-tactical-400 text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">ESSENTIAL SUPPLY MATRIX</h3></div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-tactical-accent text-3xl mb-3"><i class="fas fa-bottle-water"></i></div>
-<h4 class="font-bold text-white mb-2">Water Storage</h4>
-<p class="text-xs text-tactical-400 mb-3">7-gallon Aqua-Tainers, rain barrels, bathtubs liners</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">CRITICAL</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-tactical-warning text-3xl mb-3"><i class="fas fa-utensils"></i></div>
-<h4 class="font-bold text-white mb-2">Long-Term Food</h4>
-<p class="text-xs text-tactical-400 mb-3">Rice, beans, oats, honey, salt, powdered milk, MREs</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">CRITICAL</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-yellow-400 text-3xl mb-3"><i class="fas fa-lightbulb"></i></div>
-<h4 class="font-bold text-white mb-2">Lighting</h4>
-<p class="text-xs text-tactical-400 mb-3">LED lanterns, headlamps, candles, chem lights</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-blue-400 text-3xl mb-3"><i class="fas fa-temperature-low"></i></div>
-<h4 class="font-bold text-white mb-2">Climate Control</h4>
-<p class="text-xs text-tactical-400 mb-3">Battery fans, cooling towels, mylar blankets, shade tarps</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-red-400 text-3xl mb-3"><i class="fas fa-fire-extinguisher"></i></div>
-<h4 class="font-bold text-white mb-2">Fire Safety</h4>
-<p class="text-xs text-tactical-400 mb-3">ABC extinguishers, fire blankets, smoke detectors, escape ladders</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-purple-400 text-3xl mb-3"><i class="fas fa-shield-virus"></i></div>
-<h4 class="font-bold text-white mb-2">PPE & Sanitation</h4>
-<p class="text-xs text-tactical-400 mb-3">N95s, gloves, bleach, trash bags, portable toilet, lime</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-green-400 text-3xl mb-3"><i class="fas fa-seedling"></i></div>
-<h4 class="font-bold text-white mb-2">Survival Seeds</h4>
-<p class="text-xs text-tactical-400 mb-3">Heirloom vegetable seeds, fast-growing greens, sprouting kits</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">MEDIUM</span>
-</div>
-<div class="supply-card bg-tactical-900 border border-tactical-700 rounded-lg p-5">
-<div class="text-gray-400 text-3xl mb-3"><i class="fas fa-toolbox"></i></div>
-<h4 class="font-bold text-white mb-2">Tools</h4>
-<p class="text-xs text-tactical-400 mb-3">Multi-tool, axe, shovel, rope, chainsaw, patch kits</p>
-<span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">MEDIUM</span>
-</div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-tactical-accent/50 transition-all"><div class="text-tactical-accent text-3xl mb-3"><i class="fas fa-bottle-water"></i></div><h4 class="font-bold text-white mb-2">Water Storage</h4><p class="text-xs text-tactical-400 mb-3">7-gal Aqua-Tainers, rain barrels</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">CRITICAL</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-tactical-warning/50 transition-all"><div class="text-tactical-warning text-3xl mb-3"><i class="fas fa-utensils"></i></div><h4 class="font-bold text-white mb-2">Long-Term Food</h4><p class="text-xs text-tactical-400 mb-3">Rice, beans, oats, honey, MREs</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">CRITICAL</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-yellow-400/50 transition-all"><div class="text-yellow-400 text-3xl mb-3"><i class="fas fa-lightbulb"></i></div><h4 class="font-bold text-white mb-2">Lighting</h4><p class="text-xs text-tactical-400 mb-3">LED lanterns, headlamps, candles</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-blue-400/50 transition-all"><div class="text-blue-400 text-3xl mb-3"><i class="fas fa-temperature-low"></i></div><h4 class="font-bold text-white mb-2">Climate Control</h4><p class="text-xs text-tactical-400 mb-3">Battery fans, cooling towels, tarps</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-red-400/50 transition-all"><div class="text-red-400 text-3xl mb-3"><i class="fas fa-fire-extinguisher"></i></div><h4 class="font-bold text-white mb-2">Fire Safety</h4><p class="text-xs text-tactical-400 mb-3">ABC extinguishers, fire blankets</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-purple-400/50 transition-all"><div class="text-purple-400 text-3xl mb-3"><i class="fas fa-shield-virus"></i></div><h4 class="font-bold text-white mb-2">PPE & Sanitation</h4><p class="text-xs text-tactical-400 mb-3">N95s, gloves, bleach, trash bags</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-green-400/50 transition-all"><div class="text-green-400 text-3xl mb-3"><i class="fas fa-seedling"></i></div><h4 class="font-bold text-white mb-2">Survival Seeds</h4><p class="text-xs text-tactical-400 mb-3">Heirloom seeds, sprouting kits</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">MEDIUM</span></div>
+<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-gray-400/50 transition-all"><div class="text-gray-400 text-3xl mb-3"><i class="fas fa-toolbox"></i></div><h4 class="font-bold text-white mb-2">Tools</h4><p class="text-xs text-tactical-400 mb-3">Multi-tool, axe, shovel, rope</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">MEDIUM</span></div>
 </div>
 </div>
 </section>
 
+<!-- Desktop Intel -->
 <section id="intel" class="py-16 bg-tactical-900">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8">
-<i class="fas fa-satellite-dish text-tactical-accent text-2xl animate-pulse"></i>
-<h3 class="text-2xl font-mono font-bold text-white">LIVE INTEL FEED</h3>
-<span class="text-xs text-tactical-500 font-mono ml-auto">LAST UPDATE: <span id="lastUpdate">JUST NOW</span></span>
-</div>
+<div class="flex items-center space-x-3 mb-8"><i class="fas fa-satellite-dish text-tactical-accent text-2xl animate-pulse"></i><h3 class="text-2xl font-mono font-bold text-white">LIVE INTEL FEED</h3><span class="text-xs text-tactical-500 font-mono ml-auto">UPDATE: <span id="lastUpdate">JUST NOW</span></span></div>
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 <div class="lg:col-span-2 bg-tactical-800 border border-tactical-700 rounded-lg overflow-hidden">
-<div class="bg-tactical-900 px-4 py-3 border-b border-tactical-700 flex items-center justify-between">
-<span class="font-mono text-sm text-tactical-400">GLOBAL MONITORING STREAM</span>
-<div class="flex space-x-1">
-<span class="w-2 h-2 bg-tactical-danger rounded-full animate-pulse"></span>
-<span class="w-2 h-2 bg-tactical-warning rounded-full animate-pulse delay-75"></span>
-<span class="w-2 h-2 bg-tactical-500 rounded-full animate-pulse delay-150"></span>
-</div>
-</div>
+<div class="bg-tactical-900 px-4 py-3 border-b border-tactical-700 flex items-center justify-between"><span class="font-mono text-sm text-tactical-400">GLOBAL MONITORING STREAM</span><div class="flex space-x-1"><span class="w-2 h-2 bg-tactical-danger rounded-full animate-pulse"></span><span class="w-2 h-2 bg-tactical-warning rounded-full animate-pulse"></span><span class="w-2 h-2 bg-tactical-500 rounded-full animate-pulse"></span></div></div>
 <div class="p-4 space-y-3 max-h-96 overflow-y-auto" id="intelFeed">
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-danger">
-<span class="text-xs font-mono text-tactical-danger whitespace-nowrap">06:42 UTC</span>
-<div>
-<p class="text-sm text-white font-semibold">WMO CONFIRMS: 80% El Nino Probability</p>
-<p class="text-xs text-tactical-400">Sea surface temps approaching threshold. Subsurface heat reservoir +6C above average.</p>
-</div>
-</div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-warning">
-<span class="text-xs font-mono text-tactical-warning whitespace-nowrap">05:15 UTC</span>
-<div>
-<p class="text-sm text-white font-semibold">IFRC: Anticipatory Action Protocols Activated</p>
-<p class="text-xs text-tactical-400">Red Cross scaling preparedness in Central America and Caribbean. DREF funding pre-positioned.</p>
-</div>
-</div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-accent">
-<span class="text-xs font-mono text-tactical-accent whitespace-nowrap">03:30 UTC</span>
-<div>
-<p class="text-sm text-white font-semibold">Philippines Updates National Action Plan</p>
-<p class="text-xs text-tactical-400">Agriculture, energy, health sectors on alert. Pre-arranged cash transfers authorized.</p>
-</div>
-</div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-info">
-<span class="text-xs font-mono text-tactical-info whitespace-nowrap">02:00 UTC</span>
-<div>
-<p class="text-sm text-white font-semibold">ECMWF: Wetter Conditions Expected</p>
-<p class="text-xs text-tactical-400">Southern US, Peru, Ecuador, Eastern Africa forecast above-average rainfall.</p>
-</div>
-</div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-purple-400">
-<span class="text-xs font-mono text-purple-400 whitespace-nowrap">00:15 UTC</span>
-<div>
-<p class="text-sm text-white font-semibold">WEF: Systemic Shock Warning</p>
-<p class="text-xs text-tactical-400">Rice supply chains at risk. Fuel/fertilizer shortages from Iran conflict compound climate risk.</p>
-</div>
-</div>
+<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-danger"><span class="text-xs font-mono text-tactical-danger whitespace-nowrap">06:42 UTC</span><div><p class="text-sm text-white font-semibold">WMO CONFIRMS: 80% El Nino Probability</p><p class="text-xs text-tactical-400">Sea surface temps approaching threshold. Subsurface heat +6C above average.</p></div></div>
+<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-warning"><span class="text-xs font-mono text-tactical-warning whitespace-nowrap">05:15 UTC</span><div><p class="text-sm text-white font-semibold">IFRC: Anticipatory Action Protocols Activated</p><p class="text-xs text-tactical-400">Red Cross scaling preparedness in Central America and Caribbean.</p></div></div>
+<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-accent"><span class="text-xs font-mono text-tactical-accent whitespace-nowrap">03:30 UTC</span><div><p class="text-sm text-white font-semibold">Philippines Updates National Action Plan</p><p class="text-xs text-tactical-400">Agriculture, energy, health sectors on alert.</p></div></div>
+<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-info"><span class="text-xs font-mono text-tactical-info whitespace-nowrap">02:00 UTC</span><div><p class="text-sm text-white font-semibold">ECMWF: Wetter Conditions Expected</p><p class="text-xs text-tactical-400">Southern US, Peru, Ecuador forecast above-average rainfall.</p></div></div>
+<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-purple-400"><span class="text-xs font-mono text-purple-400 whitespace-nowrap">00:15 UTC</span><div><p class="text-sm text-white font-semibold">WEF: Systemic Shock Warning</p><p class="text-xs text-tactical-400">Rice supply chains at risk. Fuel/fertilizer shortages compound climate risk.</p></div></div>
 </div>
 </div>
 <div class="space-y-4">
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4">
-<h5 class="font-mono text-sm text-tactical-400 mb-3">PACIFIC ANOMALY (C)</h5>
-<div class="flex items-end space-x-2">
-<span class="text-3xl font-black text-tactical-danger font-mono">+6.2</span>
-<span class="text-sm text-tactical-500 mb-1">vs avg</span>
-</div>
-<div class="mt-2 h-1 bg-tactical-900 rounded-full"><div class="h-full bg-tactical-danger w-[85%]"></div></div>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4">
-<h5 class="font-mono text-sm text-tactical-400 mb-3">ONSET PROBABILITY</h5>
-<div class="flex items-end space-x-2">
-<span class="text-3xl font-black text-tactical-warning font-mono">80%</span>
-<span class="text-sm text-tactical-500 mb-1">JUN-AUG</span>
-</div>
-<div class="mt-2 h-1 bg-tactical-900 rounded-full"><div class="h-full bg-tactical-warning w-[80%]"></div></div>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4">
-<h5 class="font-mono text-sm text-tactical-400 mb-3">PEAK STRENGTH EST.</h5>
-<div class="flex items-end space-x-2">
-<span class="text-3xl font-black text-tactical-accent font-mono">STRONG</span>
-</div>
-<p class="text-xs text-tactical-500 mt-1">Possibly very strong (>2C NINO3.4)</p>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4">
-<h5 class="font-mono text-sm text-tactical-400 mb-3">AFFECTED REGIONS</h5>
-<div class="flex flex-wrap gap-2">
-<span class="text-xs bg-tactical-danger/20 text-tactical-danger px-2 py-1 rounded font-mono">PHILIPPINES</span>
-<span class="text-xs bg-tactical-danger/20 text-tactical-danger px-2 py-1 rounded font-mono">CENTRAL AMERICA</span>
-<span class="text-xs bg-tactical-warning/20 text-tactical-warning px-2 py-1 rounded font-mono">AUSTRALIA</span>
-<span class="text-xs bg-tactical-warning/20 text-tactical-warning px-2 py-1 rounded font-mono">INDONESIA</span>
-<span class="text-xs bg-tactical-info/20 text-tactical-info px-2 py-1 rounded font-mono">PERU</span>
-<span class="text-xs bg-tactical-info/20 text-tactical-info px-2 py-1 rounded font-mono">SOUTHERN US</span>
-</div>
-</div>
+<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">PACIFIC ANOMALY (C)</h5><div class="flex items-end space-x-2"><span class="text-3xl font-black text-tactical-danger font-mono">+6.2</span><span class="text-sm text-tactical-500 mb-1">vs avg</span></div><div class="mt-2 h-1 bg-tactical-900 rounded-full"><div class="h-full bg-tactical-danger w-[85%]"></div></div></div>
+<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">ONSET PROBABILITY</h5><div class="flex items-end space-x-2"><span class="text-3xl font-black text-tactical-warning font-mono">80%</span><span class="text-sm text-tactical-500 mb-1">JUN-AUG</span></div><div class="mt-2 h-1 bg-tactical-900 rounded-full"><div class="h-full bg-tactical-warning w-[80%]"></div></div></div>
+<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">PEAK STRENGTH</h5><div class="flex items-end space-x-2"><span class="text-3xl font-black text-tactical-accent font-mono">STRONG</span></div><p class="text-xs text-tactical-500 mt-1">Possibly very strong (>2C NINO3.4)</p></div>
+<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">AFFECTED REGIONS</h5><div class="flex flex-wrap gap-2"><span class="text-xs bg-tactical-danger/20 text-tactical-danger px-2 py-1 rounded font-mono">PHILIPPINES</span><span class="text-xs bg-tactical-danger/20 text-tactical-danger px-2 py-1 rounded font-mono">CENTRAL AMERICA</span><span class="text-xs bg-tactical-warning/20 text-tactical-warning px-2 py-1 rounded font-mono">AUSTRALIA</span><span class="text-xs bg-tactical-warning/20 text-tactical-warning px-2 py-1 rounded font-mono">INDONESIA</span><span class="text-xs bg-tactical-info/20 text-tactical-info px-2 py-1 rounded font-mono">PERU</span><span class="text-xs bg-tactical-info/20 text-tactical-info px-2 py-1 rounded font-mono">SOUTHERN US</span></div></div>
 </div>
 </div>
 </div>
 </section>
 
+<!-- Desktop Alerts -->
+<section id="alerts" class="py-16 bg-tactical-850 grid-bg">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center space-x-3 mb-2"><i class="fas fa-bell text-tactical-danger text-2xl animate-pulse"></i><h3 class="text-2xl font-mono font-bold text-white">LIVE DISASTER ALERTS</h3></div>
+<p class="text-tactical-400 text-sm mb-8">Real-time seismic monitoring via USGS API. Simulated typhoon, volcanic, and tsunami feeds.</p>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="bg-tactical-900 border border-tactical-danger/30 rounded-lg overflow-hidden">
+<div class="bg-tactical-danger/10 px-4 py-3 border-b border-tactical-danger/20 flex items-center justify-between"><div class="flex items-center space-x-2"><i class="fas fa-house-crack text-tactical-danger"></i><span class="font-mono text-sm text-tactical-danger font-bold">EARTHQUAKES (USGS)</span></div><span class="text-xs text-tactical-400 font-mono" id="eqStatus">CONNECTING...</span></div>
+<div class="p-4">
+<div class="flex gap-2 mb-4"><button onclick="setEqFilter('all')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-danger text-white" data-eq="all">ALL</button><button onclick="setEqFilter('4.5')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-eq="4.5">M4.5+</button><button onclick="setEqFilter('6.0')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-eq="6.0">M6.0+</button><button onclick="setEqFilter('7.0')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-eq="7.0">M7.0+</button></div>
+<div class="space-y-2 max-h-80 overflow-y-auto" id="earthquakeFeed"><div class="p-3 bg-tactical-800/50 rounded text-center"><p class="text-sm text-tactical-400 font-mono">Loading seismic data...</p></div></div>
+<div class="mt-3 text-xs text-tactical-500 font-mono text-center"><i class="fas fa-database mr-1"></i>USGS Earthquake Hazards Program</div>
+</div>
+</div>
+<div class="bg-tactical-900 border border-tactical-info/30 rounded-lg overflow-hidden">
+<div class="bg-tactical-info/10 px-4 py-3 border-b border-tactical-info/20 flex items-center justify-between"><div class="flex items-center space-x-2"><i class="fas fa-hurricane text-tactical-info"></i><span class="font-mono text-sm text-tactical-info font-bold">TYPHOONS / CYCLONES</span></div><span class="text-xs text-tactical-400 font-mono" id="typhoonStatus">LIVE</span></div>
+<div class="p-4">
+<div class="flex gap-2 mb-4"><button onclick="setTyphoonFilter('all')" class="ty-filter px-2 py-1 rounded text-xs font-mono bg-tactical-info text-white" data-ty="all">ALL</button><button onclick="setTyphoonFilter('active')" class="ty-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-ty="active">ACTIVE</button><button onclick="setTyphoonFilter('philippines')" class="ty-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-ty="philippines">PHILIPPINES</button></div>
+<div class="space-y-2 max-h-80 overflow-y-auto" id="typhoonFeed"></div>
+<div class="mt-3 text-xs text-tactical-500 font-mono text-center"><i class="fas fa-satellite mr-1"></i>JTWC / PAGASA / NHC Feeds</div>
+</div>
+</div>
+<div class="bg-tactical-900 border border-tactical-warning/30 rounded-lg overflow-hidden">
+<div class="bg-tactical-warning/10 px-4 py-3 border-b border-tactical-warning/20 flex items-center justify-between"><div class="flex items-center space-x-2"><i class="fas fa-volcano text-tactical-warning"></i><span class="font-mono text-sm text-tactical-warning font-bold">VOLCANO & TSUNAMI</span></div><span class="text-xs text-tactical-400 font-mono" id="volcanoStatus">LIVE</span></div>
+<div class="p-4">
+<div class="flex gap-2 mb-4"><button onclick="setVolcanoFilter('all')" class="vo-filter px-2 py-1 rounded text-xs font-mono bg-tactical-warning text-white" data-vo="all">ALL</button><button onclick="setVolcanoFilter('volcano')" class="vo-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-vo="volcano">VOLCANO</button><button onclick="setVolcanoFilter('tsunami')" class="vo-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-vo="tsunami">TSUNAMI</button></div>
+<div class="space-y-2 max-h-80 overflow-y-auto" id="volcanoFeed"></div>
+<div class="mt-3 text-xs text-tactical-500 font-mono text-center"><i class="fas fa-globe mr-1"></i>USGS / Smithsonian GVP / PTWC</div>
+</div>
+</div>
+</div>
+<div class="mt-8 bg-tactical-900 border border-tactical-700 rounded-lg p-6">
+<h4 class="font-mono font-bold text-white text-lg mb-4"><i class="fas fa-map-location-dot mr-2 text-tactical-accent"></i>GLOBAL THREAT MAP</h4>
+<div class="bg-tactical-800 rounded-lg p-4">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+<div class="bg-tactical-900 rounded p-3 border border-tactical-danger/30"><div class="text-2xl font-black text-tactical-danger font-mono" id="eqCountToday">--</div><div class="text-xs text-tactical-400 font-mono">EARTHQUAKES TODAY</div></div>
+<div class="bg-tactical-900 rounded p-3 border border-tactical-info/30"><div class="text-2xl font-black text-tactical-info font-mono" id="typhoonCount">--</div><div class="text-xs text-tactical-400 font-mono">ACTIVE STORMS</div></div>
+<div class="bg-tactical-900 rounded p-3 border border-tactical-warning/30"><div class="text-2xl font-black text-tactical-warning font-mono" id="volcanoCount">--</div><div class="text-xs text-tactical-400 font-mono">VOLCANO ALERTS</div></div>
+<div class="bg-tactical-900 rounded p-3 border border-tactical-accent/30"><div class="text-2xl font-black text-tactical-accent font-mono" id="tsunamiCount">--</div><div class="text-xs text-tactical-400 font-mono">TSUNAMI WATCHES</div></div>
+</div>
+<p class="text-sm text-tactical-400 font-mono"><i class="fas fa-circle-info mr-2 text-tactical-500"></i>Data refreshed every 60 seconds. USGS earthquake API provides real global seismic data.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Desktop Footer -->
 <footer class="bg-tactical-900 border-t border-tactical-700 py-12">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-<div>
-<h5 class="font-mono font-bold text-white mb-4">EL NINO COMMAND</h5>
-<p class="text-sm text-tactical-400">Tactical preparedness intelligence for the 2026 Super El Nino event. Data sourced from WMO, IFRC, and national meteorological services.</p>
+<div><h5 class="font-mono font-bold text-white mb-4">EL NINO COMMAND</h5><p class="text-sm text-tactical-400">Tactical preparedness intelligence for the 2026 Super El Nino event.</p></div>
+<div><h5 class="font-mono font-bold text-white mb-4">EMERGENCY CONTACTS</h5><ul class="space-y-2 text-sm text-tactical-400"><li><i class="fas fa-phone mr-2 text-tactical-500"></i>Local Emergency: 911</li><li><i class="fas fa-globe mr-2 text-tactical-500"></i>Red Cross: redcross.org</li><li><i class="fas fa-cloud mr-2 text-tactical-500"></i>WMO: wmo.int</li></ul></div>
+<div><h5 class="font-mono font-bold text-white mb-4">DISCLAIMER</h5><p class="text-xs text-tactical-500 leading-relaxed">This site is for preparedness planning only. Always follow official guidance from local authorities.</p></div>
 </div>
-<div>
-<h5 class="font-mono font-bold text-white mb-4">EMERGENCY CONTACTS</h5>
-<ul class="space-y-2 text-sm text-tactical-400">
-<li><i class="fas fa-phone mr-2 text-tactical-500"></i>Local Emergency: 911</li>
-<li><i class="fas fa-globe mr-2 text-tactical-500"></i>Red Cross: redcross.org</li>
-<li><i class="fas fa-cloud mr-2 text-tactical-500"></i>WMO: wmo.int</li>
-<li><i class="fas fa-heart-pulse mr-2 text-tactical-500"></i>IFRC: ifrc.org</li>
-</ul>
-</div>
-<div>
-<h5 class="font-mono font-bold text-white mb-4">DISCLAIMER</h5>
-<p class="text-xs text-tactical-500 leading-relaxed">This site is for preparedness planning purposes only. Always follow official guidance from local authorities and emergency management agencies. Weather forecasts change; maintain situational awareness.</p>
-</div>
-</div>
-<div class="border-t border-tactical-800 pt-8 text-center">
-<p class="text-xs text-tactical-600 font-mono">OPERATION THERMAL SHIELD // 2026 // PREPARE BEFORE THE PEAK</p>
-</div>
+<div class="border-t border-tactical-800 pt-8 text-center"><p class="text-xs text-tactical-600 font-mono">OPERATION THERMAL SHIELD // 2026</p></div>
 </div>
 </footer>
 
-<script>
-// ==================== CORE FUNCTIONS ====================
-function toggleMobileMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
-}
-function scrollToSection(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-}
-
-// ==================== INCOME CLASS SELECTOR ====================
-function selectClass(className) {
-    document.querySelectorAll('.income-tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.class-panel').forEach(panel => panel.classList.remove('active'));
-    document.getElementById('tab-' + className).classList.add('active');
-    document.getElementById('panel-' + className).classList.add('active');
-}
-
-// ==================== CHECKLIST ====================
-function updateChecklist() {
-    const allChecks = document.querySelectorAll('input[type="checkbox"]');
-    const checked = document.querySelectorAll('input[type="checkbox"]:checked');
-    const percent = Math.round((checked.length / allChecks.length) * 100);
-
-    document.getElementById('checklistPercent').textContent = percent + '%';
-    document.getElementById('readinessScore').textContent = percent + '%';
-    document.getElementById('readinessBar').style.width = percent + '%';
-
-    const scoreEl = document.getElementById('readinessScore');
-    if (percent < 30) {
-        scoreEl.className = 'text-3xl font-black text-tactical-danger font-mono';
-        document.getElementById('readinessBar').className = 'h-full bg-tactical-danger progress-bar';
-    } else if (percent < 70) {
-        scoreEl.className = 'text-3xl font-black text-tactical-warning font-mono';
-        document.getElementById('readinessBar').className = 'h-full bg-tactical-warning progress-bar';
-    } else {
-        scoreEl.className = 'text-3xl font-black text-tactical-400 font-mono';
-        document.getElementById('readinessBar').className = 'h-full bg-tactical-500 progress-bar';
-    }
-
-    allChecks.forEach(check => {
-        const item = check.closest('.check-item');
-        if (item) {
-            if (check.checked) item.classList.add('checked');
-            else item.classList.remove('checked');
-        }
-    });
-
-    // Save checklist state
-    const checklistState = {};
-    allChecks.forEach((check, idx) => {
-        checklistState['check_' + idx] = check.checked;
-    });
-    localStorage.setItem('el_nino_checklist', JSON.stringify(checklistState));
-}
-
-function loadChecklist() {
-    const saved = localStorage.getItem('el_nino_checklist');
-    if (saved) {
-        const state = JSON.parse(saved);
-        const allChecks = document.querySelectorAll('input[type="checkbox"]');
-        allChecks.forEach((check, idx) => {
-            if (state['check_' + idx] !== undefined) {
-                check.checked = state['check_' + idx];
-            }
-        });
-        updateChecklist();
-    }
-}
-
-// ==================== CALCULATOR ====================
-function calculateSupplies() {
-    const adults = parseInt(document.getElementById('adults').value) || 0;
-    const children = parseInt(document.getElementById('children').value) || 0;
-    const days = parseInt(document.getElementById('days').value) || 1;
-    const totalPeople = adults + children;
-
-    const water = totalPeople * days;
-    document.getElementById('waterTotal').textContent = water + ' gal';
-
-    const calories = ((adults * 2000) + (children * 1400)) * days;
-    document.getElementById('foodTotal').textContent = calories.toLocaleString() + ' cal';
-
-    const medKits = Math.ceil(totalPeople / 4);
-    document.getElementById('medTotal').textContent = medKits;
-
-    const batterySets = Math.ceil(totalPeople * (days / 14));
-    document.getElementById('batteryTotal').textContent = batterySets;
-}
-
-// ==================== PROFILE SYSTEM ====================
-function loadProfile() {
-    const profile = JSON.parse(localStorage.getItem('el_nino_profile') || '{}');
-    if (profile.name) document.getElementById('profileName').value = profile.name;
-    if (profile.class) document.getElementById('profileClass').value = profile.class;
-    if (profile.household) document.getElementById('profileHousehold').value = profile.household;
-    if (profile.location) document.getElementById('profileLocation').value = profile.location;
-    if (profile.blood) document.getElementById('profileBlood').value = profile.blood;
-    if (profile.emergency) document.getElementById('profileEmergency').value = profile.emergency;
-    if (profile.notes) document.getElementById('profileNotes').value = profile.notes;
-
-    // Load avatar
-    if (profile.avatar) {
-        document.getElementById('avatarImg').src = profile.avatar;
-        document.getElementById('avatarImg').style.display = 'block';
-        document.getElementById('avatarIcon').style.display = 'none';
-    }
-}
-
-function saveProfile() {
-    const profile = {
-        name: document.getElementById('profileName').value,
-        class: document.getElementById('profileClass').value,
-        household: document.getElementById('profileHousehold').value,
-        location: document.getElementById('profileLocation').value,
-        blood: document.getElementById('profileBlood').value,
-        emergency: document.getElementById('profileEmergency').value,
-        notes: document.getElementById('profileNotes').value,
-        avatar: localStorage.getItem('el_nino_avatar') || ''
-    };
-    localStorage.setItem('el_nino_profile', JSON.stringify(profile));
-    showToast('Profile saved to local storage');
-}
-
-function clearProfile() {
-    if (confirm('Clear all profile data? This cannot be undone.')) {
-        localStorage.removeItem('el_nino_profile');
-        localStorage.removeItem('el_nino_avatar');
-        document.getElementById('profileName').value = '';
-        document.getElementById('profileClass').value = '';
-        document.getElementById('profileHousehold').value = '1';
-        document.getElementById('profileLocation').value = '';
-        document.getElementById('profileBlood').value = '';
-        document.getElementById('profileEmergency').value = '';
-        document.getElementById('profileNotes').value = '';
-        document.getElementById('avatarImg').src = '';
-        document.getElementById('avatarImg').style.display = 'none';
-        document.getElementById('avatarIcon').style.display = 'block';
-        showToast('Profile cleared');
-    }
-}
-
-// ==================== AVATAR UPLOAD ====================
-function openAvatarModal() {
-    document.getElementById('avatarModal').classList.add('active');
-}
-function closeAvatarModal() {
-    document.getElementById('avatarModal').classList.remove('active');
-}
-
-function handleAvatarUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-        showToast('Image too large. Max 2MB.', true);
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const base64 = e.target.result;
-        localStorage.setItem('el_nino_avatar', base64);
-        document.getElementById('avatarImg').src = base64;
-        document.getElementById('avatarImg').style.display = 'block';
-        document.getElementById('avatarIcon').style.display = 'none';
-        saveProfile();
-        closeAvatarModal();
-        showToast('Profile photo saved');
-    };
-    reader.readAsDataURL(file);
-}
-
-// ==================== INVENTORY SYSTEM ====================
-let inventory = [];
-let currentFilter = 'all';
-let editingSlotId = null;
-let tempSlotImage = null;
-
-function loadInventory() {
-    inventory = JSON.parse(localStorage.getItem('el_nino_inventory') || '[]');
-    renderInventory();
-}
-
-function renderInventory() {
-    const grid = document.getElementById('inventoryGrid');
-    grid.innerHTML = '';
-
-    const filtered = currentFilter === 'all' ? inventory : inventory.filter(item => item.category === currentFilter);
-
-    filtered.forEach(item => {
-        const slot = document.createElement('div');
-        slot.className = 'inventory-slot filled';
-        slot.innerHTML = `
-            ${item.image ? `<img src="${item.image}" alt="${item.name}">` : `<div style="height:80px;display:flex;align-items:center;justify-content:center"><i class="fas fa-box text-tactical-600 text-2xl"></i></div>`}
-            <div class="slot-name">${item.name}</div>
-            <div class="slot-qty">Qty: ${item.qty}${item.notes ? ' | ' + item.notes.substring(0, 15) + (item.notes.length > 15 ? '...' : '') : ''}</div>
-            <div class="slot-actions">
-                <button class="edit-btn" onclick="editSlot('${item.id}')" title="Edit"><i class="fas fa-pen"></i></button>
-                <button onclick="deleteSlot('${item.id}')" title="Delete"><i class="fas fa-trash"></i></button>
-            </div>
-        `;
-        grid.appendChild(slot);
-    });
-
-    document.getElementById('inventoryCount').textContent = inventory.length + ' items';
-}
-
-function filterInventory(category) {
-    currentFilter = category;
-    document.querySelectorAll('.inventory-filter').forEach(btn => {
-        if (btn.dataset.filter === category) {
-            btn.className = 'inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-accent text-white';
-        } else {
-            btn.className = 'inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700';
-        }
-    });
-    renderInventory();
-}
-
-function openAddSlotModal() {
-    editingSlotId = null;
-    document.getElementById('slotModalTitle').textContent = 'ADD INVENTORY ITEM';
-    document.getElementById('slotModalId').textContent = 'NEW';
-    document.getElementById('slotName').value = '';
-    document.getElementById('slotCategory').value = 'water';
-    document.getElementById('slotQty').value = '1';
-    document.getElementById('slotNotes').value = '';
-    tempSlotImage = null;
-    document.getElementById('slotImagePreview').classList.add('hidden');
-    document.getElementById('slotModal').classList.add('active');
-}
-
-function editSlot(id) {
-    const item = inventory.find(i => i.id === id);
-    if (!item) return;
-
-    editingSlotId = id;
-    document.getElementById('slotModalTitle').textContent = 'EDIT INVENTORY ITEM';
-    document.getElementById('slotModalId').textContent = id;
-    document.getElementById('slotName').value = item.name;
-    document.getElementById('slotCategory').value = item.category;
-    document.getElementById('slotQty').value = item.qty;
-    document.getElementById('slotNotes').value = item.notes || '';
-
-    if (item.image) {
-        tempSlotImage = item.image;
-        document.getElementById('slotImagePreview').querySelector('img').src = item.image;
-        document.getElementById('slotImagePreview').classList.remove('hidden');
-    } else {
-        tempSlotImage = null;
-        document.getElementById('slotImagePreview').classList.add('hidden');
-    }
-
-    document.getElementById('slotModal').classList.add('active');
-}
-
-function closeSlotModal() {
-    document.getElementById('slotModal').classList.remove('active');
-    editingSlotId = null;
-    tempSlotImage = null;
-}
-
-function handleSlotImage(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (file.size > 1 * 1024 * 1024) {
-        showToast('Image too large. Max 1MB.', true);
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        tempSlotImage = e.target.result;
-        document.getElementById('slotImagePreview').querySelector('img').src = tempSlotImage;
-        document.getElementById('slotImagePreview').classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
-}
-
-function clearSlotImage() {
-    tempSlotImage = null;
-    document.getElementById('slotImagePreview').classList.add('hidden');
-    document.getElementById('slotImageInput').value = '';
-}
-
-function saveSlot() {
-    const name = document.getElementById('slotName').value.trim();
-    if (!name) {
-        showToast('Item name is required', true);
-        return;
-    }
-
-    const category = document.getElementById('slotCategory').value;
-    const qty = parseInt(document.getElementById('slotQty').value) || 1;
-    const notes = document.getElementById('slotNotes').value.trim();
-
-    if (editingSlotId) {
-        const idx = inventory.findIndex(i => i.id === editingSlotId);
-        if (idx !== -1) {
-            inventory[idx] = { ...inventory[idx], name, category, qty, notes };
-            if (tempSlotImage !== null) inventory[idx].image = tempSlotImage;
-        }
-        showToast('Item updated');
-    } else {
-        const newItem = {
-            id: 'item_' + Date.now(),
-            name,
-            category,
-            qty,
-            notes,
-            image: tempSlotImage || '',
-            created: new Date().toISOString()
-        };
-        inventory.push(newItem);
-        showToast('Item added to inventory');
-    }
-
-    localStorage.setItem('el_nino_inventory', JSON.stringify(inventory));
-    renderInventory();
-    closeSlotModal();
-}
-
-function deleteSlot(id) {
-    if (!confirm('Delete this item?')) return;
-    inventory = inventory.filter(i => i.id !== id);
-    localStorage.setItem('el_nino_inventory', JSON.stringify(inventory));
-    renderInventory();
-    showToast('Item deleted');
-}
-
-function clearInventory() {
-    if (!confirm('Delete ALL inventory items? This cannot be undone.')) return;
-    inventory = [];
-    localStorage.removeItem('el_nino_inventory');
-    renderInventory();
-    showToast('Inventory cleared');
-}
-
-function exportInventory() {
-    if (inventory.length === 0) {
-        showToast('Inventory is empty', true);
-        return;
-    }
-    const data = {
-        profile: JSON.parse(localStorage.getItem('el_nino_profile') || '{}'),
-        inventory: inventory,
-        exported: new Date().toISOString()
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'el_nino_inventory_' + new Date().toISOString().split('T')[0] + '.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('Inventory exported');
-}
-
-// ==================== OFFLINE DOWNLOAD ====================
-function downloadOffline() {
-    // Get the current HTML content
-    const htmlContent = document.documentElement.outerHTML;
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'super_el_nino_prep_offline.html';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('Offline version downloaded! Open this file anytime without internet.');
-}
-
-// ==================== TOAST NOTIFICATIONS ====================
-function showToast(message, isError) {
-    const existing = document.querySelector('.toast');
-    if (existing) existing.remove();
-
-    const toast = document.createElement('div');
-    toast.className = 'toast' + (isError ? ' error' : '');
-    toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'} mr-2"></i>${message}`;
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.classList.add('show'), 10);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// ==================== LIVE INTEL ====================
-function updateTime() {
-    const now = new Date();
-    const timeString = now.toISOString().split('T')[1].split('.')[0] + ' UTC';
-    document.getElementById('lastUpdate').textContent = timeString;
-}
-setInterval(updateTime, 1000);
-updateTime();
-
-const intelMessages = [
-    { time: '07:15 UTC', color: 'border-tactical-danger', title: 'NEW: Pacific Subsurface Heat Rising', text: 'TAO buoy array confirms +6.2C anomaly at 100m depth. Rapid intensification possible.' },
-    { time: '06:30 UTC', color: 'border-tactical-warning', title: 'ALERT: Central America Drought Watch', text: 'Dry Corridor entering critical pre-planting phase. Anticipatory cash transfers initiated.' },
-    { time: '05:45 UTC', color: 'border-tactical-info', title: 'UPDATE: Southern Cone Flood Prep', text: 'Uruguay and Paraguay pre-positioning sandbags. River levels monitored hourly.' },
-    { time: '04:20 UTC', color: 'border-tactical-accent', title: 'INTEL: Rice Futures Spike', text: 'Commodity markets reacting to El Nino + Hormuz conflict double shock. Thailand export limits possible.' }
-];
-
-let msgIndex = 0;
-setInterval(() => {
-    const feed = document.getElementById('intelFeed');
-    if (!feed) return;
-    const msg = intelMessages[msgIndex % intelMessages.length];
-    const div = document.createElement('div');
-    div.className = 'flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 ' + msg.color + ' animate-pulse';
-    div.innerHTML = '<span class="text-xs font-mono text-tactical-400 whitespace-nowrap">' + msg.time + '</span><div><p class="text-sm text-white font-semibold">' + msg.title + '</p><p class="text-xs text-tactical-400">' + msg.text + '</p></div>';
-    feed.insertBefore(div, feed.firstChild);
-    if (feed.children.length > 8) feed.removeChild(feed.lastChild);
-    msgIndex++;
-}, 8000);
-
-// ==================== INIT ====================
-document.addEventListener('DOMContentLoaded', function() {
-    loadChecklist();
-    loadProfile();
-    loadInventory();
-    calculateSupplies();
-
-    // Close modals on overlay click
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('active');
-        });
-    });
-});
-</script>
-</body>
-</html>
+</div><!-- end desktop-only -->
